@@ -1,0 +1,7 @@
+
+"[ 127, 138, 121 ]" -> color(strings/ParseJson) -> COLOR send(SendToArduino)
+
+"/dev/ttyACM0" -> PORT send
+
+# Error handling
+send ERROR -> out(core/Output)
