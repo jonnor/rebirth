@@ -8,14 +8,22 @@ openSerial = (c, port, callback) ->
     c.serialport = null
     return callback err
   c.serialport.on 'open', () ->
-    return callback null 
+    return callback null
+
+  returned = ""
+  c.serialport.on 'data', (data) ->
+    returned += data.toString()
+    cmds = returned.split '\n'
+    if cmds.length >= 2
+      console.log 'd', cmds[0], cmds.length, cmds[1]
+      returned = cmds[1] or ''
 
 readySend = (c) ->
-  return c.serialport and c.serialPort.isOpen()
+  return c.serialport and c.serialport.isOpen()
 
 writeUpdate = (c, color) ->
   [r, g, b] = color
-  cmd = "SET r=#{r} g=#{g} b=#{b}\n" 
+  cmd = "set r=#{r} g=#{g} b=#{b}\n"
   c.serialport.write cmd
 
 sendUpdate = (c, data, callback) ->
@@ -53,16 +61,16 @@ exports.getComponent = ->
   c.serialport = null # Stateful
   c.buffer = []
 
-
-
   noflo.helpers.WirePattern c,
-    in: ['port', 'color']
+    in: ['color']
+    params: 'port'
     out: 'updated'
     forwardGroups: true
     async: true
   , (payload, groups, out, callback) ->
 
-    sendUpdate c, payload, (err, updated) ->
+    data = { color: payload, port: c.params.port } 
+    sendUpdate c, data, (err, updated) ->
       return callback err if err
       out.send updated
       return callback null
