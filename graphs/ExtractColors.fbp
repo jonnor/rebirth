@@ -1,0 +1,10 @@
+
+load(image/UrlToCanvas) CANVAS -> CANVAS colors(image/GetColors) COLORS -> IN out(core/Output)
+
+# Error handling
+errors(core/Repeat) -> IN out
+load ERROR -> errors
+colors ERROR -> errors
+
+# Make it run
+'./test/my_photo-1.jpg' -> URL load
