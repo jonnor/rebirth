@@ -1,0 +1,9 @@
+
+stream(StreamWebcam) IMAGE -> out
+
+'1' -> (strings/ParseFloat) -> FRAMERATE stream
+'0' -> (strings/ParseInt) -> DEVICE stream
+
+# Error handling
+errors(core/Repeat) -> out(core/Output)
+stream ERROR -> errors
