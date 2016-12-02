@@ -16,6 +16,7 @@
     "coffee-script": "^1.11.1",
     "noflo": "^0.7.9",
     "noflo-canvas": "^0.2.5",
+    "noflo-core": "^0.3.0",
     "noflo-image": "^0.2.21",
     "noflo-nodejs": "^0.7.2",
     "noflo-strings": "^0.2.0",
