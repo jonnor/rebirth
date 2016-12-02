@@ -1,0 +1,21 @@
+
+# Open connection to Arduino
+# Color wont actually be seen, because it restarts upon serial connect
+"/dev/ttyACM1" -> PORT send(SendToArduino)
+"[ 0, 0, 222 ]" -> (strings/ParseJson) -> COLOR send
+
+# Extract colors and display
+load(image/UrlToCanvas) CANVAS -> CANVAS colors(image/GetColors) COLORS -> COLORS pick(PickColor)
+
+colors COLORS -> IN out(core/Output)
+pick COLOR -> COLOR send
+
+# Make it run
+'./test/my_photo-2.jpg' -> URL load
+
+# Error handling
+errors(core/Repeat) -> IN out
+load ERROR -> errors
+colors ERROR -> errors
+pick ERROR -> errors
+

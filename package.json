@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "noflo-nodejs --catch-exceptions=false --register=false --debug --verbose --graph graphs/ExtractColors.fbp --batch=true"
+    "start": "noflo-nodejs --catch-exceptions=false --register=false --debug --verbose --graph graphs/Main.fbp"
   },
   "author": "",
   "license": "ISC",
