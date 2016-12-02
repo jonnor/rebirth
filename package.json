@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "coffee-script": "^1.11.1",
     "noflo": "^0.7.9",
     "noflo-canvas": "^0.2.5",
     "noflo-image": "^0.2.21",
@@ -20,5 +21,8 @@
     "noflo-strings": "^0.2.0",
     "opencv": "^6.0.0",
     "serialport": "^4.0.6"
+  },
+  "devDependencies": {
+    "async": "^2.1.4"
   }
 }
