@@ -18,6 +18,7 @@
     "noflo-image": "^0.2.21",
     "noflo-nodejs": "^0.7.2",
     "noflo-strings": "^0.2.0",
+    "opencv": "^6.0.0",
     "serialport": "^4.0.6"
   }
 }
