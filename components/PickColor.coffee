@@ -5,7 +5,7 @@ validateInput = (input) ->
   throw new Error "Input is not an array" if not Array.isArray input
   throw new Error "Input array is empty" if not input.length
   is8bit = (number) ->
-    return number > 0 and number < 256
+    return number >= 0 and number <= 255
   isRgb = (item) ->
     return item.length == 3 and is8bit item[0] and is8bit item[1] and is8bit item[2]
   wrong = input.filter (i) -> not isRgb i
