@@ -1,9 +1,6 @@
 
 noflo = require 'noflo'
 
-buildUserAgent = ->
-  "#{pkg.name}/#{pkg.version} (+#{pkg.repository.url})"
-
 validateInput = (input) ->
   throw new Error "Input is not an array" if not Array.isArray input
   throw new Error "Input array is empty" if not input.length
