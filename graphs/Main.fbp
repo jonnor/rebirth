@@ -5,7 +5,7 @@
 "[ 0, 0, 222 ]" -> (strings/ParseJson) -> COLOR send
 
 # Read camera data
-camera(StreamWebcam) IMAGE -> convert(MatrixToCanvas)
+camera(StreamWebcam) IMAGE -> removeBackground(RemoveBackground) -> convert(MatrixToCanvas)
 '0.3' -> (strings/ParseFloat) -> FRAMERATE camera
 '320' -> (strings/ParseInt) -> WIDTH camera
 '240' -> (strings/ParseInt) -> HEIGHT camera
