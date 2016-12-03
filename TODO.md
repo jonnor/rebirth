@@ -3,10 +3,12 @@
 
 Make it work
 
-* Improve color picking. Should respect biggest/most prominent colors
+* Detect idle state
 * Implement idle animation. Breathing/heartbeat
-* Implement transition between idle and detected states.
-* Implement background elimination
+* Improve color picking.
+Should respect biggest/most prominent colors.
+Can it be done just by sorting?
+* Implement transition between idle and detected states
 
 Make it ready
 
