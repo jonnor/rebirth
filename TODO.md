@@ -1,14 +1,10 @@
 
 # Software
 
-All the pieces
-
-* Test program on RPi
-
 Make it work
 
-* Improve color picking
-* Implement idle animation. Breathing/heartbeat 
+* Improve color picking. Should respect biggest/most prominent colors
+* Implement idle animation. Breathing/heartbeat
 * Implement transition between idle and detected states.
 * Implement background elimination
 
