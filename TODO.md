@@ -12,6 +12,8 @@ Can it be done just by sorting?
 
 Make it ready
 
+* Verify background extraction on RPi
+* Check latency, no overlapping frames
 * Set up services in systemd
 * Set up connection to WiFi hotspot. Maybe also dial-home to vps2.jonnor.com,for reverse setup.
 * Test reboot cycles
