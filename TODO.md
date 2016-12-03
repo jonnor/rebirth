@@ -13,10 +13,15 @@ Can it be done just by sorting?
 Make it ready
 
 * Set up services in systemd
+* Set up connection to WiFi hotspot. Maybe also dial-home to vps2.jonnor.com,for reverse setup.
 * Test reboot cycles
 
 # Electronics
 
+* Buy microUSB cable
 * Stripboard for connections
 * Attach and test all 4 LED strips
 * Add connector for LED strips
+* Put everything into the box
+* Mount camera to structure
+* Mount box to structure
