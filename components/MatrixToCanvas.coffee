@@ -27,7 +27,7 @@ exports.getComponent = ->
     
     matrix = payload
     console.log 'matrix', matrix
-    [width, height] = matrix.size()
+    [height, width] = matrix.size()
     console.log width, height
     
     canvas = new Canvas width, height
@@ -42,11 +42,15 @@ exports.getComponent = ->
       return callback new Error 'Unexpected number of bytes per pixel' 
     
     # Copy from matrixBuffer to imageData
-    for pixelNumber in [0...matrixPixels]
-      srcIndex = pixelNumber*3
-      tgtIndex = pixelNumber*4
-      source = matrixBuffer[srcIndex]
-      imageData.data[tgtIndex] = source
+    target = imageData.data
+    for i in [0...target.length] by 4
+      srcIndex = i*3/4
+      tgtIndex = i
+      #console.log 'byte', srcIndex, tgtIndex
+      target[tgtIndex+0] = matrixBuffer[srcIndex+2] # R
+      target[tgtIndex+1] = matrixBuffer[srcIndex+1] # G
+      target[tgtIndex+2] = matrixBuffer[srcIndex+0] # B
+      target[tgtIndex+3] = 255 # A
     
     # render into canvas  
     ctx.putImageData imageData, 0, 0
