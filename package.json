@@ -15,6 +15,8 @@
   "dependencies": {
     "canvas": "^1.6.2",
     "coffee-script": "^1.11.1",
+    "color": "^0.11.4",
+    "colorspaces": "^0.1.4",
     "noflo": "^0.7.9",
     "noflo-canvas": "^0.2.5",
     "noflo-core": "^0.3.0",

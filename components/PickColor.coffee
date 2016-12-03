@@ -1,5 +1,6 @@
 
 noflo = require 'noflo'
+Color = require 'color'
 
 validateInput = (input) ->
   throw new Error "Input is not an array" if not Array.isArray input
@@ -11,6 +12,35 @@ validateInput = (input) ->
   wrong = input.filter (i) -> not isRgb i
   throw new Error "Some inputs are not RGB 8 bit colors: #{wrong}" if wrong.length
   return true
+
+enrichColor = (rgb) ->
+  c = Color().rgb(rgb)
+  hsl = c.hsl()
+  hsv = c.hsv()
+  hwb = c.hwb()
+  d =
+    r: rgb[0]
+    g: rgb[1]
+    b: rgb[2]
+    h: hsl.h
+    s: hsl.s
+    l: hsl.l
+    v: hsv.v
+    w: hwb.w
+    b: hwb.b
+    lum: c.luminosity()
+  return d
+
+applyWeight = (c) ->
+  # prefer
+  c.weight = ((c.v/255) * 0.5) + ((c.s/255) * 0.5)
+  return c
+
+rankColors = (input) ->
+  colors = input.map (c) -> enrichColor c
+  colors = colors.map applyWeight
+  sorted = colors.sort (a, b) -> return a.weight < b.weight
+  return sorted
 
 exports.getComponent = ->
   c = new noflo.Component
@@ -37,8 +67,10 @@ exports.getComponent = ->
     
     try
         validateInput payload
-        pick = payload[0]
-        out.send pick
+        ranked = rankColors payload
+        pick = ranked[0]
+        rgb = [pick.r, pick.g, pick.b]
+        out.send rgb
     catch e
         return callback e
                 
