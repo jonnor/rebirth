@@ -1,17 +1,21 @@
 
 # Open connection to Arduino
 # Color wont actually be seen, because it restarts upon serial connect
-"/dev/ttyACM1" -> PORT send(SendToArduino)
+"/dev/ttyACM0" -> PORT send(SendToArduino)
 "[ 0, 0, 222 ]" -> (strings/ParseJson) -> COLOR send
 
-# Extract colors and display
-load(image/UrlToCanvas) CANVAS -> CANVAS colors(image/GetColors) COLORS -> COLORS pick(PickColor)
+# Read camera data
+camera(StreamWebcam) IMAGE -> convert(MatrixToCanvas)
+'0.3' -> (strings/ParseFloat) -> FRAMERATE camera
+'0' -> (strings/ParseInt) -> DEVICE camera
 
-colors COLORS -> IN out(core/Output)
+# Extract the colors
+convert CANVAS -> CANVAS colors(image/GetColors) COLORS -> COLORS pick(PickColor)
+
+# Send colors to Ardunino
 pick COLOR -> COLOR send
-
-# Make it run
-'./test/my_photo-2.jpg' -> URL load
+colors COLORS -> IN out(core/Output)
+pick COLOR -> out
 
 # Error handling
 errors(core/Repeat) -> IN out

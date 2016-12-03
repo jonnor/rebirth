@@ -3,8 +3,6 @@
 
 All the pieces
 
-* Verify webcam component working
-* Integrate webcam into `Main.fbp`
 * Test program on RPi
 
 Make it work

@@ -5,7 +5,7 @@
 stream(StreamWebcam) IMAGE -> convert(MatrixToCanvas) CANVAS -> CANVAS save
 
 '0.2' -> (strings/ParseFloat) -> FRAMERATE stream
-'1' -> (strings/ParseInt) -> DEVICE stream
+'0' -> (strings/ParseInt) -> DEVICE stream
 
 # Error handling
 errors(core/Repeat) -> out(core/Output)
