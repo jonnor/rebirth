@@ -13,6 +13,8 @@ startCapture = (c, device, frameCallback) ->
   frameTime = 1000/c.params.framerate
   console.log 'time', frameTime
   c.camera = new cv.VideoCapture device
+  c.camera.setWidth c.params.width
+  c.camera.setHeight c.params.height
   c.interval = setInterval readFrame, frameTime
 
 stopCapture = (c) ->
@@ -34,6 +36,14 @@ exports.getComponent = ->
     datatype: 'number'
     description: 'Number of frames per second to capture'
     default: 30
+  c.inPorts.add 'height',
+    datatype: 'number'
+    description: 'Height of image'
+    default: 480
+  c.inPorts.add 'width',
+    datatype: 'number'
+    description: 'Width of image'
+    default: 640
 
   c.outPorts.add 'image',
     datatype: 'object'
@@ -47,7 +57,7 @@ exports.getComponent = ->
   noflo.helpers.WirePattern c,
     in: 'device'
     out: 'image'
-    params: 'framerate'
+    params: ['framerate', 'width', 'height']
     forwardGroups: true
     async: true
   , (payload, groups, out, callback) ->

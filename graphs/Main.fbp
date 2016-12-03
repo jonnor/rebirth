@@ -7,6 +7,8 @@
 # Read camera data
 camera(StreamWebcam) IMAGE -> convert(MatrixToCanvas)
 '0.3' -> (strings/ParseFloat) -> FRAMERATE camera
+'320' -> (strings/ParseInt) -> WIDTH camera
+'240' -> (strings/ParseInt) -> HEIGHT camera
 '0' -> (strings/ParseInt) -> DEVICE camera
 
 # Extract the colors
