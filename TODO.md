@@ -16,6 +16,10 @@ In detection state
 * Improve color picking.
 Should respect biggest/most prominent colors.
 Can it be done just by sorting?
+
+RPi
+
+* Setup ssh config for single-command connection
 * Check latency, no overlapping frames
 * Set up autostart with systemd
 * Test BackgoundSubtractor on RPi
