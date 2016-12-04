@@ -1,8 +1,8 @@
 
 struct Pins {
-  const static int LedR = 6;
-  const static int LedG = 3;
-  const static int LedB = 5;
+  const static int LedR = 9;
+  const static int LedG = 10;
+  const static int LedB = 11;
 };
 
 struct RgbColor {
