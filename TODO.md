@@ -26,8 +26,7 @@ RPi
 
 # Checkpoints
 
-* Monday, around 18.00. Connect remotely, set colors for picture.
-Ideally test/enable the idle animation.
+* Ideally test/enable the idle animation.
 * Saturday, around 10.00. Deploy and test final installation code.
 
 # Electronics
@@ -35,3 +34,17 @@ Ideally test/enable the idle animation.
 * Buy a new PSU cable
 * Mount camera to structure
 * Mount box to structure
+
+# Future
+
+Improve color analysis
+
+* Quantizie the image to reduce number of colors, removing gradients. Can be done by integer truncating division
+http://stackoverflow.com/a/16902092/1967571
+* Tweak parameters to RgbQuant?
+* Get rid of the matrix->canvas conversion step.
+Might be GetColors can take linear 8 bit buffer directly, but need to pass width through.
+* Alternative method is K-means clustering
+http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_ml/py_kmeans/py_kmeans_opencv/py_kmeans_opencv.html
+http://www.alanzucconi.com/2015/05/24/how-to-find-the-main-colours-in-an-image/
+
