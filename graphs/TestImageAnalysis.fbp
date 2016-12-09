@@ -1,14 +1,17 @@
 
-stream(StreamWebcam) IMAGE -> removeBackground(RemoveBackground) -> quantize(QuantizeMatrix) -> IMAGE window(ShowWindow)
+stream(StreamWebcam) IMAGE -> resize(ResizeMatrix) -> quantize(ReduceColors) -> IMAGE window(ShowWindow)
 
+# removeBackground(RemoveBackground)
 
+'64' -> (strings/ParseInt) -> WIDTH resize
+'48' -> (strings/ParseInt) -> HEIGHT resize
 
 '120' -> (strings/ParseInt) -> HISTORY removeBackground
 '0.4' -> (strings/ParseFloat) -> BACKGROUNDRATIO removeBackground
 '1.1' -> (strings/ParseFloat) -> NOISESIGMA removeBackground
 '3' -> (strings/ParseInt) -> MIXTURES removeBackground
 
-'16' -> (strings/ParseFloat) -> NUMBER quantize
+'16' -> (strings/ParseFloat) -> K quantize
 
 '320' -> (strings/ParseInt) -> WIDTH stream
 '240' -> (strings/ParseInt) -> HEIGHT stream
