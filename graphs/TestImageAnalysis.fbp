@@ -1,0 +1,18 @@
+
+stream(StreamWebcam) IMAGE -> removeBackground(RemoveBackground) -> IMAGE window(ShowWindow)
+
+'120' -> (strings/ParseInt) -> HISTORY removeBackground
+'0.4' -> (strings/ParseFloat) -> BACKGROUNDRATIO removeBackground
+'1.1' -> (strings/ParseFloat) -> NOISESIGMA removeBackground
+'3' -> (strings/ParseInt) -> MIXTURES removeBackground
+
+
+'320' -> (strings/ParseInt) -> WIDTH stream
+'240' -> (strings/ParseInt) -> HEIGHT stream
+'30' -> (strings/ParseFloat) -> FRAMERATE stream
+#'./test/data/my_video-2.mkv' -> DEVICE stream
+'0' -> (strings/ParseInt) -> DEVICE stream
+
+# Error handling
+errors(core/Repeat) -> out(core/Output)
+stream ERROR -> errors
