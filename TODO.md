@@ -1,10 +1,13 @@
 
 # Software
 
-
 Make it work
 
-* Implement idle animation.
+* Fix massive lag in webcam streaming.
+Seems pulling out slower than images produced.
+Set FPS cap, and pull 2-3 as fast with Interval?
+Should probably error if interval is not visited often enough
+* Verify idle animation.
 White breathing with red heartbeat.
 Do it in C++ in case it needs to be moved to Arduino
 Use randomization, maybe Brownian motion.
@@ -13,14 +16,17 @@ Use existinance of foreground object.
 Start with binary yes/no
 * Implement transition between idle and detected states
 In detection state
+
+Make it nice
+
 * Improve color picking.
 Should respect biggest/most prominent colors.
 Can it be done just by sorting?
 
+
 RPi
 
 * Setup ssh config for single-command connection
-* Check latency, no overlapping frames
 * Set up autostart with systemd
 * Test BackgoundSubtractor on RPi
 
