@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "./test/animation",
-    "start": "noflo-nodejs --catch-exceptions=false --register=false --debug --verbose --graph graphs/Main.fbp"
+    "start": "./node_modules/.bin/msgflo-setup --participants=true graphs/TestAnimation.fbp"
   },
   "author": "",
   "license": "ISC",
