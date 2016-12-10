@@ -108,17 +108,31 @@ scaleBrightness(RgbColor c, int factor, int max) {
     };
 }
 
+//|     /| /     |
+//|    / |/      |
+int
+sawWave(long time, int period, int low, int high) {
+    const long pos = time % period;
+    return constrain(map(pos, 0, period, low, high), low, high);
+}
+
+//|    /\  /\     |
+//|   /  \/  \    |
+int
+triangleWave(long time, int period, int low, int high) {
+    // TODO: implement
+    return 0;
+}
+
 State
 nextState(const Input &input, const State& previous) {
     State s = previous;
 
-    const int period = input.breathingPeriodMs;
-    const long pos = input.timeMs % period;
-    
     // Breathing
-    // TODO: should increase, then decrease again
-    const long mod = constrain(map(pos, 0, period, 0, 255), 1, 255);
-    RgbColor breathing = scaleBrightness(input.breathingColor, mod, 255);
+    // TODO: should use triangle
+    const int max = 255;
+    const long mod = sawWave(input.timeMs, input.breathingPeriodMs, 0, max);
+    RgbColor breathing = scaleBrightness(input.breathingColor, mod, max);
     s.timeMod = mod;
 
     // Heartbeat

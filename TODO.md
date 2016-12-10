@@ -3,7 +3,6 @@
 
 Make it work
 
-* Verify animations driving on the RPi
 * Detect idle state
 Use existinance of foreground object.
 Start with binary yes/no
