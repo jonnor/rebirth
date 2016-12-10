@@ -7,7 +7,7 @@ DEPS_LDFLAGS+=-L./build/install/lib/ -L./build/msgflo-cpp/thirdparty-install/amq
 
 LDFLAGS:=${DEPS_LDFLAGS}
 LDLIBS:=-lmsgflo -lmosquitto -lamqpcpp -lev
-CXXFLAGS:=-Wall -Werror -Wno-narrowing ${DEPS_CXXFLAGS}
+CXXFLAGS:=-std=c++11 -Wall -Werror -Wno-narrowing ${DEPS_CXXFLAGS}
 CXXFLAGS+=-g
 
 build: ./test/animation ./participants/animate
