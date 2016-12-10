@@ -7,12 +7,8 @@ services:
 node_js:
 - '4'
 before_install:
-- sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-- sudo add-apt-repository ppa:boost-latest/ppa -y
 - sudo apt-get update -qq
-- sudo apt-get install g++-4.8
-- sudo apt-get install libboost1.55-all-dev libev-dev
-- sudo apt-get install pkg-config cmake openssl libc-ares-dev
+- sudo apt-get install pkg-config cmake openssl libc-ares-dev libev-dev
 - sudo apt-get install libcairo2-dev cmake libjpeg8-dev libpango1.0-dev libgif-dev
 - sudo apt-get install libopencv-dev
 install:
