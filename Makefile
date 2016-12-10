@@ -6,7 +6,7 @@ DEPS_LDFLAGS=
 DEPS_LDFLAGS+=-L./build/install/lib/ -L./build/msgflo-cpp/thirdparty-install/amqpcpp/lib/
 
 LDFLAGS:=${DEPS_LDFLAGS}
-LDLIBS:=-lmsgflo -lmosquitto -lamqpcpp -lev
+LDLIBS:=-lmsgflo -lmosquitto -lamqpcpp -lev -lpthread
 CXXFLAGS:=-std=c++11 -Wall -Werror -Wno-narrowing ${DEPS_CXXFLAGS}
 CXXFLAGS+=-g
 

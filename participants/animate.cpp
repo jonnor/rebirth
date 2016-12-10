@@ -17,14 +17,6 @@ using namespace std;
 
     int currentTime = 0;
     State previousState;
-    Input in = {
-        timeMs: currentTime,
-        breathingPeriodMs: 2100,
-        breathingColor: { 200, 200, 255 },
-        heartRate: 80,
-        heartbeatColor: { 255, 10, 10 },
-        heartbeatLengthMs: 100,
-    };
 #ifdef HAVE_JSON11
     printf("%s", in.to_json().dump().c_str());
 #endif
@@ -39,13 +31,38 @@ using namespace std;
     }
 */
 
-struct ParticipantState {
-    Input in;
+class Animator {
+public:
+    Animator(Input in)
+      : input(in)
+    {
+    }
+
+    void run(int forwardTime) {
+        input.timeMs += forwardTime;
+        const State next = nextState(input, state);
+        realizeState(state, config);
+        state = next;
+    }
+    void updateInput() {
+        // FIXME: implement
+    }
+
+    bool
+    realizeState(const State& state, const Config &config) {
+        // FIXME: implement
+        cout << "new state: " << state.ledColor.to_json().dump() << endl;
+    return true;
+    }
+
+private:
+    Input input;
     State state;
+    Config config;
 };
 
 void
-setupAnimate(ParticipantState *state, const std::string &role, std::shared_ptr<msgflo::Engine> engine) {
+setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgflo::Engine> engine) {
 
     msgflo::Definition def;
     def.component = "AnimateRebirth";
@@ -63,7 +80,6 @@ setupAnimate(ParticipantState *state, const std::string &role, std::shared_ptr<m
     return;
 }
 
-atomic_bool run(true);
 int main(int argc, char **argv)
 {
     // Parse options
@@ -77,10 +93,31 @@ int main(int argc, char **argv)
         config.url(argv[2]);
     }
 
-    // Run  
+    // Setup
+    Input initial = {
+        timeMs: 1,
+        breathingPeriodMs: 2100,
+        breathingColor: { 200, 200, 255 },
+        heartRate: 80,
+        heartbeatColor: { 255, 10, 10 },
+        heartbeatLengthMs: 100,
+    };
+
+    Animator animator(initial);
+
     auto engine = msgflo::createEngine(config);
-    ParticipantState state;
-    setupAnimate(&state, role, engine);
+    setupAnimator(&animator, role, engine);
+
+    // Run
+    atomic_bool run(true);
+    std::thread updater([&]()
+    {
+        while (run) {
+            const int tickMs = 20;
+            this_thread::sleep_for(chrono::milliseconds(tickMs));
+            animator.run(tickMs);
+        }
+    });
 
     std::cout << role << "(AnimateRebirth) started" << endl;
     engine->launch();
