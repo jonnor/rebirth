@@ -3,10 +3,13 @@
 
 Make it work
 
-* Make animation drive the LEDs
+* Fix bugs in animation making it get dimmer and dimmer
+* Verify animations driving on the RPi
 * Detect idle state
 Use existinance of foreground object.
 Start with binary yes/no
+* Expose animation inputs on Msgflo.
+At least the rates. Maybe also color for quick experimentation
 * Implement transition between idle and detected states
 In detection state
 
@@ -25,6 +28,11 @@ RPi
 * Setup ssh config for single-command connection
 * Set up autostart with systemd
 * Test BackgoundSubtractor on RPi
+
+Tooling
+
+* Have an emulated Arduino. Should echo back
+`socat PTY,link=/dev/ttyS10 PTY,link=/dev/ttyS11`
 
 # Checkpoints
 
