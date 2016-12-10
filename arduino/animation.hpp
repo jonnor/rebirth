@@ -118,10 +118,21 @@ sawWave(long time, int period, int low, int high) {
 
 //|    /\  /\     |
 //|   /  \/  \    |
+// Note: a bit unorthodox in that we go from bottom to bottom
 int
 triangleWave(long time, int period, int low, int high) {
-    // TODO: implement
-    return 0;
+    const int halfPeriod = (period/2);
+    const long pos = time % period; 
+
+    if (pos < halfPeriod) {
+        // moving upwards
+        const long p = time % halfPeriod;
+        return map(p, 0, halfPeriod, low, high);
+    } else {
+        // moving downwards
+        const long p = (time+halfPeriod) % halfPeriod;
+        return map(p, 0, halfPeriod, high, low);
+   }
 }
 
 State
@@ -129,9 +140,8 @@ nextState(const Input &input, const State& previous) {
     State s = previous;
 
     // Breathing
-    // TODO: should use triangle
     const int max = 255;
-    const long mod = sawWave(input.timeMs, input.breathingPeriodMs, 0, max);
+    const long mod = triangleWave(input.timeMs, input.breathingPeriodMs, 0, max);
     RgbColor breathing = scaleBrightness(input.breathingColor, mod, max);
     s.timeMod = mod;
 
@@ -173,6 +183,7 @@ tests(void) {
     RgbColor midGray = { 100, 100, 100 };
     RgbColor pureRed = { 255, 0, 0 }; 
     
+    // mix()
     RgbColor fullA = mix(midGray, pureRed, 0);
     assert(fullA == midGray);
 
@@ -188,6 +199,7 @@ tests(void) {
     //fprintf(stderr, "%s\n", quarterA.to_string().c_str());
     assert(quarterA == (RgbColor{ 138, 75, 75 }));
 
+    // scaleBrightness()
     RgbColor noBright = scaleBrightness(midGray, 0, 255);
     //fprintf(stderr, "%s\n", quarterA.to_string().c_str());
     assert(noBright == (RgbColor{ 0, 0, 0 }));
@@ -199,6 +211,33 @@ tests(void) {
     RgbColor fullBright = scaleBrightness(midGray, 255, 255);
     //fprintf(stderr, "%s\n", fullBright.to_string().c_str());
     assert(fullBright == midGray);
+
+    // triangleWave()
+    const int waveMin = 10;
+    const int waveMax = 255;
+    const int oneSecondMs = 1000; 
+    auto triangleZero = triangleWave(0, oneSecondMs, waveMin, waveMax);
+    assert(triangleZero == waveMin);
+
+    auto triangleOnePeriod = triangleWave(oneSecondMs,
+                                oneSecondMs, waveMin, waveMax);
+    //fprintf(stderr, "%d\n", triangleOnePeriod);
+    assert(triangleOnePeriod == waveMin);
+
+    auto triangleHalfUppeak = triangleWave((oneSecondMs/2)-10,
+                                oneSecondMs, waveMin, waveMax);
+    //fprintf(stderr, "%d\n", triangleHalfUppeak);
+    assert(triangleHalfUppeak == waveMax-5);
+
+    auto triangleHalf = triangleWave((oneSecondMs/2),
+                            oneSecondMs, waveMin, waveMax);
+    //fprintf(stderr, "%d\n", triangleHalf);
+    assert(triangleHalf == waveMax);
+
+    auto triangleHalfDownpeak = triangleWave((oneSecondMs/2)+10,
+                                oneSecondMs, waveMin, waveMax);
+    //fprintf(stderr, "%d\n", triangleHalfDownpeak);
+    assert(triangleHalfDownpeak == waveMax-4);
 
     return true;
 }
