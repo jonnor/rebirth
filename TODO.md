@@ -3,7 +3,6 @@
 
 Make it work
 
-* Fix bugs in animation making it get dimmer and dimmer
 * Verify animations driving on the RPi
 * Detect idle state
 Use existinance of foreground object.
@@ -29,11 +28,6 @@ RPi
 * Set up autostart with systemd
 * Test BackgoundSubtractor on RPi
 
-Tooling
-
-* Have an emulated Arduino. Should echo back
-`socat PTY,link=/dev/ttyS10 PTY,link=/dev/ttyS11`
-
 # Checkpoints
 
 * Ideally test/enable the idle animation.
@@ -58,3 +52,11 @@ Might be GetColors can take linear 8 bit buffer directly, but need to pass width
 http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_ml/py_kmeans/py_kmeans_opencv/py_kmeans_opencv.html
 http://www.alanzucconi.com/2015/05/24/how-to-find-the-main-colours-in-an-image/
 
+Tooling
+
+* Have an emulated Arduino. Should echo back.
+`socat PTY,link=/dev/ttyS10 PTY,link=/dev/ttyS11`
+Alternative would be to use MicroFlo on the Arduino, and running emulator locally.
+* Tool that allows drawing datalines with Beziers in SVG.
+Then evaluates this by sampling, and generate a C array.
+This can then be used to get exactly the behavior wanted.

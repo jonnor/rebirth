@@ -64,6 +64,18 @@ struct Input {
 // State of system
 struct State {
     RgbColor ledColor;
+    
+    long timeMod;
+
+#ifdef HAVE_JSON11
+    json11::Json to_json() const {
+        using namespace json11;
+        return Json::object {
+            {"timeMod", (double)timeMod},
+        };
+    }
+#endif
+
 };
 
 struct Config {
@@ -74,20 +86,40 @@ struct Config {
 
 #define between(val, lower, upper) (val >= lower && val <= upper) ? 1 : 0
 
+long map(long x, long in_min, long in_max, long out_min, long out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+#define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
+
+
+static inline int
+scale(uint8_t i, int factor, int max) {
+    return (i*factor)/max;    
+}
+
+RgbColor
+scaleBrightness(RgbColor c, int factor, int max) {
+    return {
+        scale(c.r, factor, max),
+        scale(c.r, factor, max),
+        scale(c.r, factor, max),
+    };
+}
+
 State
 nextState(const Input &input, const State& previous) {
-    // FIXME: the integer math here is not sound, overflows or something
+    State s = previous;
+
     const int period = input.breathingPeriodMs;
     const long pos = input.timeMs % period;
     
     // Breathing
-    const long time = (input.timeMs) ? input.timeMs : 1; // prevent division by zero
-    const long mod = (pos*255) / time;
-    RgbColor breathing = {
-      (uint8_t)(input.breathingColor.r*mod/255),
-      (uint8_t)(input.breathingColor.g*mod/255),
-      (uint8_t)(input.breathingColor.b*mod/255)
-    };
+    // TODO: should increase, then decrease again
+    const long mod = constrain(map(pos, 0, period, 0, 255), 1, 255);
+    RgbColor breathing = scaleBrightness(input.breathingColor, mod, 255);
+    s.timeMod = mod;
 
     // Heartbeat
     RgbColor heartbeat = input.heartbeatColor;
@@ -96,7 +128,6 @@ nextState(const Input &input, const State& previous) {
     const int heartbeatMix = ( between(heartbeatPos, 1, input.heartbeatLengthMs ) ) ?  1000 : 0;
 
     // Combine
-    State s = previous;
     s.ledColor = mix(breathing, heartbeat, heartbeatMix);
 
     return s;
@@ -116,7 +147,8 @@ bool
 realizeState(const State& state, const Config &config) {
     // TODO: implement for hardware
     // TODO: implement via MsgFlo, sending MQTT message to HW-unit
-    colorRenderTerminal(state.ledColor, "(#####)\n");
+    colorRenderTerminal(state.ledColor, "(########)");
+    printf("%s\n", state.to_json().dump().c_str());
     return true;
 }
 
@@ -142,6 +174,18 @@ tests(void) {
     //fprintf(stderr, "%s\n", quarterA.to_string().c_str());
     assert(quarterA == (RgbColor{ 138, 75, 75 }));
 
+    RgbColor noBright = scaleBrightness(midGray, 0, 255);
+    //fprintf(stderr, "%s\n", quarterA.to_string().c_str());
+    assert(noBright == (RgbColor{ 0, 0, 0 }));
+
+    RgbColor halfBright = scaleBrightness(midGray, 128, 255);
+    //fprintf(stderr, "%s\n", halfBright.to_string().c_str());
+    assert(halfBright == (RgbColor{ 50, 50, 50 }));
+
+    RgbColor fullBright = scaleBrightness(midGray, 255, 255);
+    //fprintf(stderr, "%s\n", fullBright.to_string().c_str());
+    assert(fullBright == midGray);
+
     return true;
 }
 
@@ -150,8 +194,8 @@ main(int argc, char *argv[]) {
 
     std::vector<Input> history;
 
-    const int simulationInterval = 200;
-    const int simulationTime = 5*1000;
+    const int simulationInterval = 100;
+    const int simulationTime = 10*1000;
 
     tests();
 

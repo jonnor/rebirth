@@ -21,7 +21,7 @@ msgflo-cpp:
 dependencies: msgflo-cpp
 
 run: ./test/animation
-	./test/animation
+	LD_LIBRARY_PATH=./build/install/lib ./test/animation
 
 dev:
 	PATH=${PATH}:/home/${USER}/.local/bin/ when-changed arduino/animation.hpp make run
