@@ -122,12 +122,17 @@ int main(int argc, char **argv)
     auto engine = msgflo::createEngine(config);
     setupAnimator(&animator, role, engine);
 
+    int tickMs = 100;
+    const char *tick = std::getenv("REBIRTH_TICKMS");
+    if (tick) {
+        tickMs = std::stoi(tick);
+    }
+
     // Run
     atomic_bool run(true);
     std::thread updater([&]()
     {
         while (run) {
-            const int tickMs = 20;
             this_thread::sleep_for(chrono::milliseconds(tickMs));
             animator.run(tickMs);
         }
