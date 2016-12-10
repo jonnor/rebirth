@@ -1,5 +1,7 @@
 language: c
 compiler: clang
+sudo: true
+dist: trusty
 services:
 - rabbitmq
 node_js:
