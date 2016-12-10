@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./test/animation",
     "start": "noflo-nodejs --catch-exceptions=false --register=false --debug --verbose --graph graphs/Main.fbp"
   },
   "author": "",
