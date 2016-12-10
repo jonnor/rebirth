@@ -10,9 +10,9 @@ LDLIBS:=-lmsgflo -lmosquitto -lamqpcpp -lev -lpthread
 CXXFLAGS:=-std=c++11 -Wall -Werror -Wno-narrowing ${DEPS_CXXFLAGS}
 CXXFLAGS+=-g
 
-./test/animation: arduino/animation.hpp
-
 build: ./test/animation ./participants/animate ./participants/showcolor
+
+./test/animation: arduino/animation.hpp
 
 msgflo-cpp:
 	mkdir -p build/msgflo-cpp/install
