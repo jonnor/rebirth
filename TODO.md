@@ -3,14 +3,7 @@
 
 Make it work
 
-* Fix massive lag in webcam streaming.
-Seems pulling out slower than images produced.
-Set FPS cap, and pull 2-3 as fast with Interval?
-Should probably error if interval is not visited often enough
-* Verify idle animation.
-White breathing with red heartbeat.
-Do it in C++ in case it needs to be moved to Arduino
-Use randomization, maybe Brownian motion.
+* Make animation drive the LEDs
 * Detect idle state
 Use existinance of foreground object.
 Start with binary yes/no
@@ -19,10 +12,13 @@ In detection state
 
 Make it nice
 
+* Improve idle animation.
+Use randomization, maybe Brownian motion.
 * Improve color picking.
 Should respect biggest/most prominent colors.
 Can it be done just by sorting?
-
+* Tweak webcam streaming setting.
+Maybe specify FPS property on VideoCapture?
 
 RPi
 
