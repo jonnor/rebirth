@@ -1,16 +1,26 @@
 language: c
 compiler: clang
-sudo: true
+sudo: false
 dist: trusty
+addons:
+  apt:
+    packages:
+    - pkg-config
+    - cmake
+    - openssl
+    - libc-ares-dev
+    - libev-dev
+    - libcairo2-dev
+    - libjpeg8-dev
+    - libpango1.0-dev
+    - libgif-dev
+    - libopencv-dev
 services:
 - rabbitmq
 node_js:
 - '4'
 before_install:
-- sudo apt-get update -qq
-- sudo apt-get install pkg-config cmake openssl libc-ares-dev libev-dev
-- sudo apt-get install libcairo2-dev cmake libjpeg8-dev libpango1.0-dev libgif-dev
-- sudo apt-get install libopencv-dev
+- echo Jippi 
 install:
 - export CC=gcc-4.8
 - export CXX=g++-4.8
