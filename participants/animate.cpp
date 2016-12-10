@@ -36,29 +36,37 @@ public:
     Animator(Input in)
       : input(in)
     {
+        stateChanged = [](State s) { cerr << "Animator:: No state change handler attached"; };
     }
 
-    void run(int forwardTime) {
+    void
+    run(int forwardTime) {
         input.timeMs += forwardTime;
         const State next = nextState(input, state);
         realizeState(state, config);
         state = next;
     }
-    void updateInput() {
+    void
+    updateInput() {
         // FIXME: implement
     }
 
     bool
     realizeState(const State& state, const Config &config) {
-        // FIXME: implement
-        cout << "new state: " << state.ledColor.to_json().dump() << endl;
-    return true;
+        stateChanged(state);
+        return true;
+    }
+
+    void
+    onStateChanged(std::function<void(State)> callback) {
+        stateChanged = callback;
     }
 
 private:
     Input input;
     State state;
     Config config;
+    std::function<void(State)> stateChanged;
 };
 
 void
@@ -68,14 +76,20 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
     def.component = "AnimateRebirth";
     def.label = "Repeats input on outport unchanged";
     def.outports = {
-        { "out", "array", "" }
+        { "out", "array", "" },
+        { "ledcolor", "array", "" },
     };
     def.role = role;
+
     msgflo::Participant *participant = engine->registerParticipant(def, [&](msgflo::Message *msg) {
         auto payload = msg->asJson();
         std::cout << "Got message:" << endl << payload.dump() << std::endl;
         participant->send("out", payload);
         msg->ack();
+    });
+
+    animator->onStateChanged([participant](State state) {
+        participant->send("ledcolor", state.ledColor.to_json());
     });
     return;
 }
