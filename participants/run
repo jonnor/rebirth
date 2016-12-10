@@ -1,0 +1,6 @@
+#!/bin/bash -e
+export LD_LIBRARY_PATH=./build/install/lib/
+component=$1
+role=$2
+participant="$(echo $component | tr '[A-Z]' '[a-z]')"
+exec participants/$participant $role

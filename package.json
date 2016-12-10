@@ -17,6 +17,8 @@
     "coffee-script": "^1.11.1",
     "color": "^0.11.4",
     "colorspaces": "^0.1.4",
+    "mqtt": "^2.1.3",
+    "msgflo": "^0.9.1",
     "noflo": "^0.7.9",
     "noflo-canvas": "^0.2.5",
     "noflo-core": "^0.3.0",
@@ -25,6 +27,11 @@
     "noflo-strings": "^0.2.0",
     "opencv": "^6.0.0",
     "serialport": "^4.0.6"
+  },
+  "msgflo": {
+    "handlers": {
+      ".cpp": "./participants/run #COMPONENT #ROLE"
+    }
   },
   "devDependencies": {
     "async": "^2.1.4"
