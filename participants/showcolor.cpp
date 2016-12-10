@@ -50,7 +50,8 @@ int main(int argc, char **argv)
                 payload["g"].number_value(),
                 payload["b"].number_value(),
             };
-            colorRenderTerminal(color, "XXXX");
+            colorRenderTerminal(color, "XXXXXXXXXX\n");
+            fflush(stdout);
         } else {
             auto error = "input was not a color: " + payload.dump();
             participant->send("error", error);
