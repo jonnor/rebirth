@@ -22,7 +22,7 @@ readySend = (c) ->
   return c.serialport and c.serialport.isOpen()
 
 writeUpdate = (c, color) ->
-  [r, g, b] = color
+  {r, g, b} = color
   cmd = "set r=#{r} g=#{g} b=#{b}\n"
   c.serialport.write cmd
 
@@ -69,10 +69,16 @@ exports.getComponent = ->
     async: true
   , (payload, groups, out, callback) ->
 
-    data = { color: payload, port: c.params.port } 
+    color = payload
+    if color.length == 3
+      [r, g, b] = color
+      color = { r, g, b }
+
+    data = { color: payload, port: c.params.port }
     sendUpdate c, data, (err, updated) ->
       return callback err if err
-      out.send updated
+      # FIXME: respect updated
+      out.send data.color
       return callback null
 
   return c

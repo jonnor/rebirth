@@ -1,2 +1,2 @@
 
-animate(animate) LEDCOLOR -> show(showcolor)
+anim(animate) LEDCOLOR -> send(Send) -> show(showcolor)
