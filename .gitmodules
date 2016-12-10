@@ -1,0 +1,3 @@
+[submodule "thirdparty/msgflo-cpp"]
+	path = thirdparty/msgflo-cpp
+	url = git@github.com:msgflo/msgflo-cpp.git

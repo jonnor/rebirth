@@ -1,5 +1,7 @@
 
-#DEPS_CXXFLAGS=-I./thirdparty/json11 -DHAVE_JSON11
+DEPS_CXXFLAGS=
+DEPS_CXXFLAGS+=-I./thirdparty/msgflo-cpp/thirdparty/json11 -DHAVE_JSON11
+DEPS_CXXFLAGS+=-I./thirdparty/msgflo-cpp/include -DHAVE_MSGFLO
 CXXFLAGS:=-Wall -Werror -Wno-narrowing ${DEPS_CXXFLAGS}
 CXXFLAGS+=-g
 

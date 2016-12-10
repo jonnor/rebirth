@@ -22,8 +22,7 @@ struct RgbColor {
     uint8_t b;
 #ifdef HAVE_JSON11
     json11::Json to_json() const {
-    using namespace json11;
-    return Json::object {
+        return json11::Json::object {
             {"r", r},
             {"g", g},
             {"b", b},
@@ -59,11 +58,11 @@ struct Input {
 
 #ifdef HAVE_JSON11
     json11::Json to_json() const {
-    using namespace json11;
-    return Json::object {
-            {"timeMs", timeMs},
-            {"periodMs", periodMs},
-            {"color", color.to_json()},
+        using namespace json11;
+        return Json::object {
+            {"timeMs", (int)timeMs},
+            {"breathingPeriodMs", breathingPeriodMs},
+            {"breathingColor", breathingColor.to_json()},
     };
 }
 #endif
