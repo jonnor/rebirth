@@ -14,6 +14,7 @@
 #ifdef HAVE_JSON11
 #include <json11.hpp>
 #include <json11.cpp>
+#include "./flowtrace.hpp"
 #endif
 
 #include "./color.hpp"
@@ -149,7 +150,7 @@ nextState(const Input &input, const State& previous) {
     RgbColor heartbeat = input.heartbeatColor;
     const long heartbeatPeriod = (1000*60)/input.heartRate;
     const long heartbeatPos = input.timeMs % heartbeatPeriod;
-    const int heartbeatMix = ( between(heartbeatPos, 1, input.heartbeatLengthMs ) ) ?  1000 : 0;
+    const int heartbeatMix = ( between(heartbeatPos, 1, input.heartbeatLengthMs) ) ?  1000 : 0;
 
     // Combine
     s.ledColor = mix(breathing, heartbeat, heartbeatMix);
@@ -242,10 +243,42 @@ tests(void) {
     return true;
 }
 
+struct InputOutputPair {
+    Input input;    
+    State state;
+};
+
+json11::Json
+createFlowtrace(std::vector<InputOutputPair> history) {
+
+    std::vector<flowtrace::Event> events;
+
+    for (auto &p : history) {
+        // TODO: take time into account here
+        flowtrace::Event in(p.input);
+        flowtrace::Event out(p.state);
+        events.push_back(in);
+        events.push_back(out);
+    }
+
+    // TODO: put a graph representation into the header
+    using namespace json11;   
+    auto graph = Json::object {};
+
+    return Json::object {
+        { "header", Json::object {
+            { "graphs", Json::object {
+                { "default", graph },
+            }},
+        }},
+        { "events", events },
+    };
+}
+
 int
 main(int argc, char *argv[]) {
 
-    std::vector<Input> history;
+    std::vector<InputOutputPair> history;
 
     const int simulationInterval = 100;
     const int simulationTime = 10*1000;
@@ -270,10 +303,13 @@ main(int argc, char *argv[]) {
         in.timeMs = currentTime;
         const State state = nextState(in, previousState);
         realizeState(state, config);
-        history.push_back(in);
+        history.push_back({ in, state });
         previousState = state;
         currentTime += simulationInterval;
     }
 
+    auto trace = createFlowtrace(history);
+    // TODO: write to file
+    //printf("%s", trace.dump().c_str());
 }
 #endif
