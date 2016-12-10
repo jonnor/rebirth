@@ -10,11 +10,13 @@ LDLIBS:=-lmsgflo -lmosquitto -lamqpcpp -lev
 CXXFLAGS:=-std=c++11 -Wall -Werror -Wno-narrowing ${DEPS_CXXFLAGS}
 CXXFLAGS+=-g
 
+MSGFLO_CPP_OPTIONS=-Dmosquitto_INCLUDE_DIRECTORY=./build/install/lib
+
 build: ./test/animation ./participants/animate
 
 msgflo-cpp:
 	mkdir -p build/msgflo-cpp/install
-	cd build/msgflo-cpp && cmake -DCMAKE_INSTALL_PREFIX=../install ../../thirdparty/msgflo-cpp
+	cd build/msgflo-cpp && cmake ${MSGFLO_CPP_OPTIONS} -DCMAKE_INSTALL_PREFIX=../install ../../thirdparty/msgflo-cpp
 	cd build/msgflo-cpp && make -j4 && make install
 
 dependencies: msgflo-cpp
