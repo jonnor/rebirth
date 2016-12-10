@@ -28,7 +28,7 @@ install:
 - make
 - npm install
 before_script:
-- ./build/install/bin/mosquitto -d
+- LD_LIBRARY_PATH=./build/install/lib/ ./build/install/bin/mosquitto -d
 script:
 - npm test
 

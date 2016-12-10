@@ -16,6 +16,7 @@ msgflo-cpp:
 	mkdir -p build/msgflo-cpp/install
 	cd build/msgflo-cpp && cmake -DCMAKE_INSTALL_PREFIX=../install ../../thirdparty/msgflo-cpp
 	cd build/msgflo-cpp && make -j4 && make install
+	cp build/msgflo-cpp/thirdparty-install/amqpcpp/lib/* build/install/lib/
 
 dependencies: msgflo-cpp
 
