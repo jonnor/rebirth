@@ -1,0 +1,15 @@
+[Unit]
+Description=The Rebirth installation
+ConditionPathExists=|/usr/bin
+After=network.target
+
+[Service]
+Environment=MSGFLO_BROKER=mqtt://localhost REBIRTH_TICKMS=33
+User=pi
+WorkingDirectory=/home/pi/rebirth
+ExecStart=/usr/bin/npm start
+RestartSec=5
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
