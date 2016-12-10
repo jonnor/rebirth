@@ -18,6 +18,26 @@
 
 #include "./color.hpp"
 
+
+static inline int
+mix(uint8_t A, uint8_t B, int a, int b, int total) {
+    return (A*a + B*b) / (total);
+}
+
+//
+RgbColor
+mix(RgbColor a, RgbColor b, int balance) {
+    const int total = 1000;
+    const int bMix = balance;
+    const int aMix = total-balance;
+    RgbColor ret = {
+        mix(a.r, b.r, aMix, bMix, total),
+        mix(a.g, b.g, aMix, bMix, total),
+        mix(a.b, b.b, aMix, bMix, total),
+    };
+    return ret;
+}
+
 // Anything that may influence the system (cause state to change)
 struct Input {
     long timeMs;
