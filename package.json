@@ -34,7 +34,7 @@
       ".cpp": "./participants/run #COMPONENT #ROLE"
     },
     "components": {
-      "Send": "./node_modules/.bin/noflo-runtime-msgflo --name #ROLE --graph SendToArduino"
+      "Send": "./node_modules/.bin/noflo-runtime-msgflo --name #ROLE --graph SendArduino"
     }
   },
   "devDependencies": {

@@ -1,8 +1,9 @@
 INPORT=send.COLOR:IN
 OUTPORT=send.UPDATED:OUT
+OUTPORT=errors.OUT:ERROR
 
 # Open connection to Arduino
-"/dev/ttyACM1" -> PORT send(SendToArduino)
+"/dev/ttyACM0" -> PORT send(SendToArduino)
 "[ 0, 0, 222 ]" -> (strings/ParseJson) -> COLOR send
 
 # Error handling
