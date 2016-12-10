@@ -1,5 +1,5 @@
 
-DEPS_CXXFLAGS=
+DEPS_CXXFLAGS=-I./arduino
 DEPS_CXXFLAGS+=-I./thirdparty/msgflo-cpp/thirdparty/json11 -DHAVE_JSON11
 DEPS_CXXFLAGS+=-I./thirdparty/msgflo-cpp/include -DHAVE_MSGFLO
 DEPS_LDFLAGS=
@@ -10,7 +10,7 @@ LDLIBS:=-lmsgflo -lmosquitto -lamqpcpp -lev -lpthread
 CXXFLAGS:=-std=c++11 -Wall -Werror -Wno-narrowing ${DEPS_CXXFLAGS}
 CXXFLAGS+=-g
 
-build: ./test/animation ./participants/animate
+build: ./test/animation ./participants/animate ./participants/showcolor
 
 msgflo-cpp:
 	mkdir -p build/msgflo-cpp/install

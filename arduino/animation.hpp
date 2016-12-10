@@ -16,34 +16,7 @@
 #include <json11.cpp>
 #endif
 
-struct RgbColor {
-    uint8_t r;
-    uint8_t g;
-    uint8_t b;
-#ifdef HAVE_JSON11
-    json11::Json to_json() const {
-        return json11::Json::object {
-            {"r", r},
-            {"g", g},
-            {"b", b},
-    };
-}
-#endif
-
-    std::string to_string() {
-        char buf[100];
-        snprintf(buf, 100, "RgbColor(%d, %d, %d)", r, g, b);
-        return std::string(buf);
-    }
-
-    bool operator==(const RgbColor &other) {
-        const bool equals = \
-            (r == other.r) &&
-            (g == other.g) &&
-            (b == other.b); 
-        return equals;
-    }
-};
+#include "./color.hpp"
 
 // Anything that may influence the system (cause state to change)
 struct Input {
@@ -77,24 +50,7 @@ struct Config {
     bool _;
 };
 
-static inline int
-mix(uint8_t A, uint8_t B, int a, int b, int total) {
-    return (A*a + B*b) / (total);
-}
 
-// 
-RgbColor
-mix(RgbColor a, RgbColor b, int balance) {
-    const int total = 1000;
-    const int bMix = balance;
-    const int aMix = total-balance;
-    RgbColor ret = {
-        mix(a.r, b.r, aMix, bMix, total),
-        mix(a.g, b.g, aMix, bMix, total),
-        mix(a.b, b.b, aMix, bMix, total),
-    };
-    return ret;
-}
 
 #define between(val, lower, upper) (val >= lower && val <= upper) ? 1 : 0
 
