@@ -27,7 +27,7 @@ install:
 - make
 - npm install
 before_script:
-- mosquitto -d
+- ./build/install/bin/mosquitto -d
 script:
 - npm test
 
