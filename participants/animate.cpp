@@ -24,9 +24,14 @@ public:
         realizeState(state, config);
         state = next;
     }
+
+    Input
+    getInput() {
+       return input;
+    }
     void
-    updateInput() {
-        // FIXME: implement
+    setInput(const Input & in) {
+       input = in;
     }
 
     bool
@@ -53,16 +58,44 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
     msgflo::Definition def;
     def.component = "AnimateRebirth";
     def.label = "Repeats input on outport unchanged";
+    def.inports = {
+        //{ "startstop", "boolean", "" },
+
+        // Primary inputs
+        { "heartrate", "number", "" },
+        { "breathingperiod", "number", "" },
+
+        // Tuning
+        { "breathingcolor", "color", "" },
+        { "heartbeatcolor", "color", "" },
+        { "heartbeatlength", "number", "" },
+    };
     def.outports = {
-        { "out", "array", "" },
+        { "error", "error", "" },
+        { "configchanged", "object", "" },
         { "ledcolor", "array", "" },
     };
     def.role = role;
 
-    msgflo::Participant *participant = engine->registerParticipant(def, [&](msgflo::Message *msg) {
-        auto payload = msg->asJson();
-        std::cout << "Got message:" << endl << payload.dump() << std::endl;
-        participant->send("out", payload);
+    msgflo::Participant *participant = engine->registerParticipant(def, [&participant, animator](msgflo::Message *msg) {
+        std::string port = msg->port();
+
+        auto c = animator-> getInput();
+        if (port == "heartrate") {
+            auto payload = msg->asString();
+            c.heartRate = stoi(payload);
+            animator->setInput(c);
+            //participant->send("configchanged", c);
+        } else if (port == "breathingperiod") {
+            auto payload = msg->asString();
+            c.breathingPeriodMs = stoi(payload);
+            animator->setInput(c);
+            //participant->send("configchanged", c);
+        } else {
+            std::string error = "Changing " + port + " not implemented";
+            //participant->send("error", error);
+        }
+
         msg->ack();
     });
 
