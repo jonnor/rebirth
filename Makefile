@@ -26,10 +26,11 @@ dependencies: msgflo-cpp
 run: ./test/animation
 	LD_LIBRARY_PATH=./build/install/lib ./test/animation
 
-test: ./test/averager
+check: ./test/averager ./test/animation
 	LD_LIBRARY_PATH=./build/install/lib ./test/averager
+	LD_LIBRARY_PATH=./build/install/lib ./test/animation
 
 dev:
 	PATH=${PATH}:/home/${USER}/.local/bin/ when-changed arduino/animation.hpp make run
 
-.PHONY: msgflo-cpp
+.PHONY: msgflo-cpp check
