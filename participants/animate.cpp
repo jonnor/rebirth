@@ -99,6 +99,10 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
             c.breathingColor = RgbColor::fromHexString(payload.c_str());
             animator->setInput(c);
             participant->send("configchanged", c);
+        } else if (port == "heartbeatlength") {
+            c.heartbeatLengthMs = stoi(payload.c_str());
+            animator->setInput(c);
+            participant->send("configchanged", c);
         } else {
             std::string error = "Changing " + port + " not implemented";
             participant->send("error", error);
@@ -126,19 +130,17 @@ int main(int argc, char **argv)
         config.url(argv[2]);
     }
 
-    // Setup
-    Input initial = initialInputConfig();
-
-    Animator animator(initial);
-
-    auto engine = msgflo::createEngine(config);
-    setupAnimator(&animator, role, engine);
-
     int tickMs = 100;
     const char *tick = std::getenv("REBIRTH_TICKMS");
     if (tick) {
         tickMs = std::stoi(tick);
     }
+
+    // Setup
+    Input initial = initialInputConfig();
+    Animator animator(initial);
+    auto engine = msgflo::createEngine(config);
+    setupAnimator(&animator, role, engine);
 
     // Run
     atomic_bool run(true);

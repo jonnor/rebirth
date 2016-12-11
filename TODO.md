@@ -4,9 +4,6 @@
 Make it work
 
 * Add support for distance sensor to `SendArduino`
-* Expose `Animate` inputs on Msgflo.
-At least the heartbeat/breathing rates.
-Maybe also color etc, for quicker experimentation
 * Detect idle state as threshold on distance sensing,
 change the heartbeat/breathing rate
 
