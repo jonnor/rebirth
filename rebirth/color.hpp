@@ -28,6 +28,17 @@ struct RgbColor {
             (b == other.b); 
         return equals;
     }
+
+public:
+    static RgbColor fromHexString(const char *);
 };
+
+RgbColor
+RgbColor::fromHexString(const char *str) {
+    int r, g, b;
+    sscanf(str, "#%02x%02x%02x", &r, &g, &b);
+    const RgbColor c = { r, g, b };
+    return c;
+}
 
 #endif //REBIRTH_COLOR_HPP
