@@ -11,4 +11,4 @@ colors ERROR -> errors
 pick ERROR -> errors
 
 # Make it run
-'./test/my_photo-1.jpg' -> URL load
+'./test/data/my_photo-1.jpg' -> URL load
