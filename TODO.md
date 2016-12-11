@@ -3,10 +3,6 @@
 
 Make it work
 
-* Add support for distance sensor to Arduino code.
-Analog sensor, with some basic filtering.
-http://playground.arduino.cc/Main/SharpIR
-https://github.com/guillaume-rico/SharpIR
 * Add support for distance sensor to `SendArduino`
 * Expose `Animate` inputs on Msgflo.
 At least the heartbeat/breathing rates.
