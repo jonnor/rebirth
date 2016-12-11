@@ -1,8 +1,15 @@
 
 noflo = require 'noflo'
 SerialPort = require 'serialport'
- 
-openSerial = (c, port, callback) ->
+
+exports.parseDistance = parseDistance = (cmd) ->
+  regexp = 'updated distance=(\d+).*'
+  match = cmd.match regexp
+  if match?.length > 1
+    return match[1]
+  return null
+
+openSerial = (c, port, distanceCallback, callback) ->
   c.serialport = new SerialPort port
   c.serialport.on 'error', (err) ->
     c.serialport = null
@@ -16,6 +23,8 @@ openSerial = (c, port, callback) ->
     cmds = returned.split '\n'
     if cmds.length >= 2
       console.log 'd', cmds[0], cmds.length, cmds[1]
+      distance = parseDistance cmd
+      distanceCallback distance if distance?
       returned = cmds[1] or ''
 
 readySend = (c) ->
@@ -26,7 +35,7 @@ writeUpdate = (c, color) ->
   cmd = "set r=#{r} g=#{g} b=#{b}\n"
   c.serialport.write cmd
 
-sendUpdate = (c, data, callback) ->
+sendUpdate = (c, data, distanceCallback, callback) ->
   return callback new Error "Missing port data" if not data.port
   return callback new Error "Missing color data" if not data.color
 
@@ -34,7 +43,7 @@ sendUpdate = (c, data, callback) ->
     writeUpdate c, data.color
     return callback null
   else
-    openSerial c, data.port, (err) ->
+    openSerial c, data.port, distanceCallback, (err) ->
       return callback err if err
       writeUpdate c, data.color
       return callback null # TODO: wait for ACK
@@ -52,6 +61,8 @@ exports.getComponent = ->
     datatype: 'array'
     description: 'RGB 8bit color'
 
+  c.outPorts.add 'distance',
+    datatype: 'number'
   c.outPorts.add 'updated',
     datatype: 'object'
   c.outPorts.add 'error',
@@ -74,8 +85,13 @@ exports.getComponent = ->
       [r, g, b] = color
       color = { r, g, b }
 
+    #c.outPorts.distance.connect()
+    onDistanceChanged = (d) ->
+      c.outPorts.distance.send d
+      c.outPorts.distance.disconnect()
+
     data = { color: payload, port: c.params.port }
-    sendUpdate c, data, (err, updated) ->
+    sendUpdate c, data, onDistanceChanged, (err, updated) ->
       return callback err if err
       # FIXME: respect updated
       out.send data.color

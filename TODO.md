@@ -3,7 +3,6 @@
 
 Make it work
 
-* Add support for distance sensor to `SendArduino`
 * Detect idle state as threshold on distance sensing,
 change the heartbeat/breathing rate
 
@@ -14,8 +13,9 @@ Make the heartbeat/breathing intensify in inverse porportion to distance
 * Improve transition
 When making transitions, do a mix between previous and new animations, over a short period?
 Or probably better to have heart/breathing rate move towards new target gradually. 
-* Improve idle animation.
-Use a bit of randomization, maybe Brownian motion.
+* Improve animation.
+Tweak length of spacing between the two parts of the beat
+https://www.freesound.org/people/klankbeeld/sounds/181805/
 
 # Checkpoints
 

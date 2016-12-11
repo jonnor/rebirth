@@ -1,5 +1,6 @@
 INPORT=send.COLOR:IN
 OUTPORT=send.UPDATED:OUT
+OUTPORT=send.DISTANCE:DISTANCE
 OUTPORT=errors.OUT:ERROR
 
 # Open connection to Arduino
