@@ -11,12 +11,12 @@ struct RgbColor {
             {"b", b},
     };
 }
-#endif
     std::string to_string() {
         char buf[100];
         snprintf(buf, 100, "RgbColor(%d, %d, %d)", r, g, b);
         return std::string(buf);
     }
+#endif
 
     bool operator==(const RgbColor &other) {
         const bool equals = \
