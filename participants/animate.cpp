@@ -77,7 +77,8 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
     };
     def.role = role;
 
-    msgflo::Participant *participant = engine->registerParticipant(def, [&participant, animator](msgflo::Message *msg) {
+    msgflo::Participant *participant = engine->registerParticipant(def);
+    participant->onMessage([participant, animator](msgflo::Message *msg) {
         std::string port = msg->port();
 
         auto c = animator-> getInput();
@@ -85,15 +86,15 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
             auto payload = msg->asString();
             c.heartRate = stoi(payload);
             animator->setInput(c);
-            //participant->send("configchanged", c);
+            participant->send("configchanged", c);
         } else if (port == "breathingperiod") {
             auto payload = msg->asString();
             c.breathingPeriodMs = stoi(payload);
             animator->setInput(c);
-            //participant->send("configchanged", c);
+            participant->send("configchanged", c);
         } else {
             std::string error = "Changing " + port + " not implemented";
-            //participant->send("error", error);
+            participant->send("error", error);
         }
 
         msg->ack();
