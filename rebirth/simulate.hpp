@@ -64,14 +64,7 @@ simulateAnimation() {
 
     int currentTime = 0;
     State previousState;
-    Input in = {
-        timeMs: currentTime,
-        breathingPeriodMs: 2100,
-        breathingColor: { 200, 200, 255 },
-        heartRate: 80,
-        heartbeatColor: { 255, 10, 10 },
-        heartbeatLengthMs: 100,
-    };
+    Input in = initialInputConfig();
 #ifdef HAVE_JSON11
     printf("%s", in.to_json().dump().c_str());
 #endif

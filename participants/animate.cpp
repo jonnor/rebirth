@@ -86,14 +86,7 @@ int main(int argc, char **argv)
     }
 
     // Setup
-    Input initial = {
-        timeMs: 1,
-        breathingPeriodMs: 2100,
-        breathingColor: { 200, 200, 255 },
-        heartRate: 80,
-        heartbeatColor: { 255, 10, 10 },
-        heartbeatLengthMs: 100,
-    };
+    Input initial = initialInputConfig();
 
     Animator animator(initial);
 

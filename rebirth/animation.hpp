@@ -152,4 +152,16 @@ nextState(const Input &input, const State& previous) {
     return s;
 }
 
+Input initialInputConfig() {
+    static const Input initial = {
+        timeMs: 1,
+        breathingPeriodMs: 2100,
+        breathingColor: { 200, 200, 255 },
+        heartRate: 80,
+        heartbeatColor: { 255, 10, 10 },
+        heartbeatLengthMs: 100,
+    };
+    return initial;
+}
+
 #endif //REBIRTH_ANIMATION_HPP
