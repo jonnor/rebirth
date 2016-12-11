@@ -1,4 +1,7 @@
 
+#ifndef REBIRTH_COLOR_HPP
+#define REBIRTH_COLOR_HPP
+
 struct RgbColor {
     uint8_t r;
     uint8_t g;
@@ -26,3 +29,5 @@ struct RgbColor {
         return equals;
     }
 };
+
+#endif //REBIRTH_COLOR_HPP

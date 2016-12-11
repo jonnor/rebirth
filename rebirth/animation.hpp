@@ -1,6 +1,9 @@
 // Experiment in using FRP-like techniques for embedded systems,
 // applied to some LED animations
 
+#ifndef REBIRTH_ANIMATION_HPP
+#define REBIRTH_ANIMATION_HPP
+
 #include <stdint.h>
 
 #ifdef HAVE_JSON11
@@ -8,7 +11,7 @@
 #include <json11.cpp>
 #endif
 
-#include "./color.hpp"
+#include "color.hpp"
 
 
 static inline int
@@ -148,3 +151,5 @@ nextState(const Input &input, const State& previous) {
 
     return s;
 }
+
+#endif //REBIRTH_ANIMATION_HPP

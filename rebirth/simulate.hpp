@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 
+#include "animation.hpp"
+
 #include "./flowtrace.hpp"
 
 // Render using console Truecolor https://gist.github.com/XVilka/8346728

@@ -1,5 +1,5 @@
 
-DEPS_CXXFLAGS=-I./arduino
+DEPS_CXXFLAGS=-I./rebirth
 DEPS_CXXFLAGS+=-I./thirdparty/msgflo-cpp/thirdparty/json11 -DHAVE_JSON11
 DEPS_CXXFLAGS+=-I./thirdparty/msgflo-cpp/include -DHAVE_MSGFLO
 DEPS_LDFLAGS=
@@ -12,8 +12,8 @@ CXXFLAGS+=-g
 
 build: ./test/animation ./test/averager ./participants/animate ./participants/showcolor
 
-./test/animation: arduino/animation.hpp
-./test/averager: arduino/averager.hpp
+./test/animation: rebirth/animation.hpp rebirth/simulate.hpp
+./test/averager: rebirth/averager.hpp
 
 msgflo-cpp:
 	mkdir -p build/msgflo-cpp/install
@@ -26,7 +26,7 @@ dependencies: msgflo-cpp
 run: ./test/animation
 	LD_LIBRARY_PATH=./build/install/lib ./test/animation
 
-check: ./test/averager ./test/animation
+check: build
 	LD_LIBRARY_PATH=./build/install/lib ./test/averager
 	LD_LIBRARY_PATH=./build/install/lib ./test/animation
 

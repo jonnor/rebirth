@@ -5,31 +5,9 @@
 #include <thread>
 
 #include <msgflo.h>
-#include "../arduino/animation.hpp"
+#include "animation.hpp"
 
 using namespace std;
-
-/*
-    const int simulationInterval = 200;
-    const int simulationTime = 5*1000;
-
-    tests();
-
-    int currentTime = 0;
-    State previousState;
-#ifdef HAVE_JSON11
-    printf("%s", in.to_json().dump().c_str());
-#endif
-    Config config;
-    while (currentTime < simulationTime) {
-        in.timeMs = currentTime;
-        const State state = nextState(in, previousState);
-        realizeState(state, config);
-        history.push_back(in);
-        previousState = state;
-        currentTime += simulationInterval;
-    }
-*/
 
 class Animator {
 public:

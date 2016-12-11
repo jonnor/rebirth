@@ -1,5 +1,8 @@
 
-// Assumes json11 is already included
+#ifdef HAVE_JSON11
+#include <json11.hpp>
+#endif
+
 namespace flowtrace {
 
 
