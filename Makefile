@@ -10,9 +10,10 @@ LDLIBS:=-lmsgflo -lmosquitto -lamqpcpp -lev -lpthread
 CXXFLAGS:=-std=c++11 -Wall -Werror -Wno-narrowing -Wno-unused-function ${DEPS_CXXFLAGS}
 CXXFLAGS+=-g
 
-build: ./test/animation ./participants/animate ./participants/showcolor
+build: ./test/animation ./test/averager ./participants/animate ./participants/showcolor
 
 ./test/animation: arduino/animation.hpp
+./test/averager: arduino/averager.hpp
 
 msgflo-cpp:
 	mkdir -p build/msgflo-cpp/install
@@ -24,6 +25,9 @@ dependencies: msgflo-cpp
 
 run: ./test/animation
 	LD_LIBRARY_PATH=./build/install/lib ./test/animation
+
+test: ./test/averager
+	LD_LIBRARY_PATH=./build/install/lib ./test/averager
 
 dev:
 	PATH=${PATH}:/home/${USER}/.local/bin/ when-changed arduino/animation.hpp make run

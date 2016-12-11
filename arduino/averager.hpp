@@ -1,3 +1,7 @@
+
+#include <stdlib.h>
+#include <string.h>
+
 int int_cmp(const void *a, const void *b) { 
   const int *ia = (const int *)a;
   const int *ib = (const int *)b;
@@ -18,6 +22,7 @@ public:
   // NOTE: if not completely filled yet, will give arbitrary result
   int getMedian() {
     int samples[size];
+    memcpy(samples, buffer, sizeof(int)*size);
     qsort(samples, size, sizeof(int), int_cmp);
     return samples[size/2]; 
   }
