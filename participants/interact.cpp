@@ -110,8 +110,8 @@ int main(int argc, char **argv)
         config.url(argv[2]);
     }
 
-    int tickMs = 100;
-    const char *tick = std::getenv("REBIRTH_TICKMS");
+    int tickMs = 250;
+    const char *tick = std::getenv("REBIRTH_INTERACT_TICKMS");
     if (tick) {
         tickMs = std::stoi(tick);
     }
