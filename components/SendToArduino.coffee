@@ -3,10 +3,10 @@ noflo = require 'noflo'
 SerialPort = require 'serialport'
 
 exports.parseDistance = parseDistance = (cmd) ->
-  regexp = 'updated distance=(\d+).*'
+  regexp = 'updated distance=(.*).*' # HACK, should use \d
   match = cmd.match regexp
   if match?.length > 1
-    return match[1]
+    return parseInt match[1]
   return null
 
 openSerial = (c, port, distanceCallback, callback) ->
@@ -22,7 +22,8 @@ openSerial = (c, port, distanceCallback, callback) ->
     returned += data.toString()
     cmds = returned.split '\n'
     if cmds.length >= 2
-      console.log 'd', cmds[0], cmds.length, cmds[1]
+      #console.log 'd', cmds[0], cmds.length, cmds[1]
+      cmd = cmds[0]
       distance = parseDistance cmd
       distanceCallback distance if distance?
       returned = cmds[1] or ''

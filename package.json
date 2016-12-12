@@ -38,6 +38,7 @@
     }
   },
   "devDependencies": {
-    "async": "^2.1.4"
+    "async": "^2.1.4",
+    "chai": "^3.5.0"
   }
 }
