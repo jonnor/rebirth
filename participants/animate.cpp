@@ -52,6 +52,11 @@ private:
     std::function<void(State)> stateChanged;
 };
 
+bool
+validInput(int val) {
+    return (val > 3 && val < 1000); 
+}
+
 void
 setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgflo::Engine> engine) {
 
@@ -85,13 +90,13 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
         auto c = animator-> getInput();
         if (port == "heartrate") {
             c.heartRate = stoi(payload);
-            if (c.heartRate > 0) { 
+            if (validInput(c.heartRate)) { 
                 animator->setInput(c);
                 participant->send("configchanged", c);
             }
         } else if (port == "breathingperiod") {
             c.breathingPeriodMs = stoi(payload);
-            if (c.breathingPeriodMs > 0) {
+            if (validInput(c.breathingPeriodMs)) {
                 animator->setInput(c);
                 participant->send("configchanged", c);
             }
