@@ -54,7 +54,7 @@ private:
 
 bool
 validInput(int val) {
-    return (val > 3 && val < 1000); 
+    return (val > 3 && val < 10000); 
 }
 
 void
