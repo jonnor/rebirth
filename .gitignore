@@ -4,3 +4,4 @@ test/animation
 test/averager
 participants/animate
 participants/showcolor
+participants/interact

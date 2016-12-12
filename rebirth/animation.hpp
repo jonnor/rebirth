@@ -204,7 +204,7 @@ interactionNext(const InteractionInput &in, const InteractionState& prev) {
     InteractionOutput desired;
     if (in.distanceCm > maxDistance) {
         desired.heartRate = 50;
-        desired.heartRate = 2100;
+        desired.breathingPeriod = 2100;
     } else {
         desired.heartRate = 133;
         desired.breathingPeriod = 900;
