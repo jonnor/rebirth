@@ -12,6 +12,8 @@ CXXFLAGS+=-g
 
 build: ./test/animation ./test/averager ./participants/animate ./participants/showcolor ./participants/interact
 
+./participants/animate: rebirth/animation.hpp
+./participants/interact: rebirth/animation.hpp
 ./test/animation: rebirth/animation.hpp rebirth/simulate.hpp
 ./test/averager: rebirth/averager.hpp
 
