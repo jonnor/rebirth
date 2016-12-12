@@ -164,4 +164,78 @@ Input initialInputConfig() {
     return initial;
 }
 
+
+struct InteractionOutput {
+    int heartRate;
+    int breathingPeriod;
+};
+struct InteractionInput {
+    long timeMs;
+    int distanceCm;
+    int interpolationPeriodMs;
+};
+struct InteractionState {
+    long targetTimeMs;
+    InteractionOutput target;
+    InteractionOutput current;
+};
+
+int
+interpolate(long distance, int from, int to, int maxDistance) {
+    if (distance < 0) {
+        return to;
+    }
+    const long fromTarget = maxDistance-distance;
+    return map(fromTarget, 0, maxDistance, from, to);
+}
+
+bool
+basicallySame(InteractionOutput a, InteractionOutput b) {
+    const bool sameRate = abs(a.heartRate - b.heartRate) < 10;
+    const bool samePeriod = abs(a.breathingPeriod - b.breathingPeriod) < 100;
+    return sameRate && samePeriod;
+}
+
+InteractionState
+interactionNext(const InteractionInput &in, const InteractionState& prev) {
+    // calculate targets from input
+    // TODO: scale intensity up by inverse proportion of distance
+    const int maxDistance = 120;
+    InteractionOutput desired;
+    if (in.distanceCm > maxDistance) {
+        desired.heartRate = 50;
+        desired.heartRate = 2100;
+    } else {
+        desired.heartRate = 133;
+        desired.breathingPeriod = 900;
+    }
+
+    InteractionState state = prev;
+    if (basicallySame(desired, prev.current)) {
+        // difference is small, can jump straight to new
+        state.current = desired;
+    } else {
+        if (!basicallySame(desired, prev.target)) {
+            // target changed and we need (more) time to get there
+            state.targetTimeMs = in.timeMs + in.interpolationPeriodMs;
+        }
+        state.target = desired;
+
+        // interpolation
+        InteractionOutput i;
+        InteractionOutput from = prev.current;
+        const long dist = state.targetTimeMs - in.timeMs;
+        const long period = in.interpolationPeriodMs;
+        i.heartRate = interpolate(dist, from.heartRate, desired.heartRate, period);
+        i.breathingPeriod = interpolate(dist, from.breathingPeriod, desired.breathingPeriod, period);
+
+        // TODO: test and actually use interpolation
+        state.current = i;
+        state.current = desired;
+    }
+
+    return state;
+}
+
+
 #endif //REBIRTH_ANIMATION_HPP
