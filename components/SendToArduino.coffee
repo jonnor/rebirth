@@ -93,7 +93,9 @@ exports.getComponent = ->
 
     data = { color: payload, port: c.params.port }
     sendUpdate c, data, onDistanceChanged, (err, updated) ->
-      return callback err if err
+      if err
+        c.outPorts.error.send err.message
+        return callback err
       # FIXME: respect updated
       out.send data.color
       return callback null
