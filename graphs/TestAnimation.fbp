@@ -1,2 +1,5 @@
 
-anim(animate) LEDCOLOR -> send(Send)
+interact(interact)
+anim(animate) LEDCOLOR -> IN send(Send) DISTANCE -> interact
+interact HEARTBEAT -> HEARTBEAT anim
+interact BREATHINGPERIOD -> BREATHINGPERIOD anim

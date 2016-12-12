@@ -3,8 +3,11 @@
 
 Make it work
 
-* Detect idle state as threshold on distance sensing,
-change the heartbeat/breathing rate
+* Flash Arduino with new firmware
+* Update RPi with latest code
+* Test getting distance data from Arduino,
+check that the values seem sane, and are stable
+* Run the entire flow, test triggering transitions
 
 Make it nice
 
