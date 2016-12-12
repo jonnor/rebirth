@@ -85,12 +85,16 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
         auto c = animator-> getInput();
         if (port == "heartrate") {
             c.heartRate = stoi(payload);
-            animator->setInput(c);
-            participant->send("configchanged", c);
+            if (c.heartRate > 0) { 
+                animator->setInput(c);
+                participant->send("configchanged", c);
+            }
         } else if (port == "breathingperiod") {
             c.breathingPeriodMs = stoi(payload);
-            animator->setInput(c);
-            participant->send("configchanged", c);
+            if (c.breathingPeriodMs > 0) {
+                animator->setInput(c);
+                participant->send("configchanged", c);
+            }
         } else if (port == "heartbeatcolor") {
             c.heartbeatColor = RgbColor::fromHexString(payload.c_str());
             animator->setInput(c);
