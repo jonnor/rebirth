@@ -28,9 +28,6 @@ openSerial = (c, port, distanceCallback, callback) ->
       distanceCallback distance if distance?
       returned = cmds[1] or ''
 
-readySend = (c) ->
-  return c.serialport and c.serialport.isOpen()
-
 writeUpdate = (c, color) ->
   {r, g, b} = color
   cmd = "set r=#{r} g=#{g} b=#{b}\n"
@@ -40,9 +37,12 @@ sendUpdate = (c, data, distanceCallback, callback) ->
   return callback new Error "Missing port data" if not data.port
   return callback new Error "Missing color data" if not data.color
 
-  if readySend c
-    writeUpdate c, data.color
-    return callback null
+  if c.serialport
+    if c.serialport.isOpen()
+      writeUpdate c, data.color
+      return callback null
+    else
+      return callback new "WARN: serialport not open (yet)"
   else
     openSerial c, data.port, distanceCallback, (err) ->
       return callback err if err
