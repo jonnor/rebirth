@@ -48,9 +48,10 @@ struct Input {
     json11::Json to_json() const {
         using namespace json11;
         return Json::object {
-            {"timeMs", (int)timeMs},
+            //{"timeMs", (int)timeMs},
             {"breathingPeriodMs", breathingPeriodMs},
-            {"breathingColor", breathingColor.to_json()},
+            {"heartRate", heartRate},
+            //{"breathingColor", breathingColor.to_json()},
     };
 }
 #endif
