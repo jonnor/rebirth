@@ -71,7 +71,7 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
         auto c = animator-> getInput();
         if (port == "distance") {
             c.distanceCm = stoi(payload);
-            if (c.distanceCm > 0 && c.distanceCm < 10000); {
+            if (c.distanceCm > 0 && c.distanceCm < 1000) {
                 animator->setInput(c);
                 participant->send("distancechanged", std::to_string(c.distanceCm));
             }
