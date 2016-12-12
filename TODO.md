@@ -3,11 +3,11 @@
 
 Make it work
 
-* Flash Arduino with new firmware
-* Update RPi with latest code
-* Test getting distance data from Arduino,
-check that the values seem sane, and are stable
-* Run the entire flow, test triggering transitions
+* Steady color on R channel (green) when above the threshold,
+Since transition is abrupt, no need for interpolation.
+Maybe kill the interact/animate split, let animate take `distance` input directly.
+Can calculate its derived values (mode, heartrate, breathingperiod), and send out.
+Then can test against this.
 
 Make it nice
 
