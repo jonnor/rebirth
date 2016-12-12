@@ -117,7 +117,7 @@ int main(int argc, char **argv)
 
     // Setup
     InteractionInput initial = {
-        timeMs: 0,
+        timeMs: 1,
         distanceCm: 300,
         interpolationPeriodMs: 1000, 
     };
