@@ -1,16 +1,10 @@
 
 # Software
 
-Make it work
-
-* Steady color on R channel (green) when above the threshold,
-Since transition is abrupt, no need for interpolation.
-Maybe kill the interact/animate split, let animate take `distance` input directly.
-Can calculate its derived values (mode, heartrate, breathingperiod), and send out.
-Then can test against this.
-
 Make it nice
 
+* Configure the Mosquitto server to have WebSockets support
+* Serve the webinterface, and setup in the graph
 * Increase interactivity
 Make the heartbeat/breathing intensify in inverse porportion to distance
 * Improve transition
