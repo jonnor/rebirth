@@ -186,6 +186,8 @@ struct InteractionInput {
     int distanceCm;
     int distanceThresholdCm;
     int interpolationPeriodMs;
+    int activeHeartRate;
+    int activeBreathingPeriod;
 };
 struct InteractionState {
     long targetTimeMs;
@@ -199,7 +201,9 @@ initialInteractionConfig() {
         timeMs: 1,
         distanceCm: 300,
         distanceThresholdCm: 120,
-        interpolationPeriodMs: 1000, 
+        interpolationPeriodMs: 1000,
+        activeHeartRate: 133,
+        activeBreathingPeriod: 900,
     };
     return initial;
 }
@@ -231,8 +235,8 @@ interactionNext(const InteractionInput &in, const InteractionState& prev) {
         desired.heartRate = 50;
         desired.breathingPeriod = 2100;
     } else {
-        desired.heartRate = 133;
-        desired.breathingPeriod = 900;
+        desired.heartRate = in.activeHeartRate;
+        desired.breathingPeriod = in.activeBreathingPeriod;
     }
 
     InteractionState state = prev;

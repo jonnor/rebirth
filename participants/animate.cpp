@@ -95,7 +95,10 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
         { "idlecolor", "color", "" },
         { "breathingcolor", "color", "" },
         { "heartbeatcolor", "color", "" },
+
         { "heartbeatlength", "number", "" },
+        { "activeheartrate", "number", "" },
+        { "activebreathingperiod", "number", "" },
     };
     def.outports = {
 
@@ -173,6 +176,14 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
         } else if (port == "heartbeatlength") {
             c.heartbeatLengthMs = stoi(payload.c_str());
             animator->setInput(c);
+            participant->send("configchanged", c);
+        } else if (port == "activeheartrate") {
+            const int value = stoi(payload.c_str());
+            animator->interact.activeHeartRate = value;
+            participant->send("configchanged", c);
+        } else if (port == "activebreathingperiod") {
+            const int value = stoi(payload.c_str());
+            animator->interact.activeBreathingPeriod = value;
             participant->send("configchanged", c);
         } else {
             std::string error = "Changing " + port + " not implemented";
