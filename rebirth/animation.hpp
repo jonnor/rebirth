@@ -37,6 +37,9 @@ mix(RgbColor a, RgbColor b, int balance) {
 struct Input {
     long timeMs;
 
+    bool idle;
+    RgbColor idleColor;
+
     int breathingPeriodMs;
     RgbColor breathingColor;
 
@@ -135,11 +138,16 @@ State
 nextState(const Input &input, const State& previous) {
     State s = previous;
 
+    // Idle
+    if (input.idle) {
+        s.ledColor = input.idleColor;
+        return s;
+    }
+
     // Breathing
     const int max = 255;
     const long mod = triangleWave(input.timeMs, input.breathingPeriodMs, 0, max);
     RgbColor breathing = scaleBrightness(input.breathingColor, mod, max);
-    s.timeMod = mod;
 
     // Heartbeat
     RgbColor heartbeat = input.heartbeatColor;
@@ -156,6 +164,8 @@ nextState(const Input &input, const State& previous) {
 Input initialInputConfig() {
     static const Input initial = {
         timeMs: 1,
+        idle: true,
+        idleColor: { 255, 0, 0 },
         breathingPeriodMs: 2100,
         breathingColor: { 200, 200, 255 },
         heartRate: 80,

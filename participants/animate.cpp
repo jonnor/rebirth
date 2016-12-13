@@ -29,6 +29,7 @@ public:
         const auto s = interactionState.current;
         input.breathingPeriodMs = s.breathingPeriod;
         input.heartRate = s.heartRate;
+        input.idle = s.aboveThreshold;
 
         const State next = nextState(input, state);
         realizeState(state, config);
