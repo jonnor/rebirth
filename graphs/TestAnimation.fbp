@@ -1,6 +1,3 @@
 
 anim(animate) LEDCOLOR -> IN send(Send)
-send DISTANCE -> DISTANCE interact(interact)
-
-interact HEARTRATE -> HEARTRATE anim
-interact BREATHINGPERIOD -> BREATHINGPERIOD anim
+send DISTANCE -> DISTANCE anim
