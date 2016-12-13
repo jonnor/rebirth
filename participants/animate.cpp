@@ -112,7 +112,21 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
     def.role = role;
 
     msgflo::Participant *participant = engine->registerParticipant(def);
-    participant->onMessage([participant, animator](msgflo::Message *msg) {
+
+    auto updateInteractionInputs = [participant, animator](int distanceCm) {
+        animator->setDistance(distanceCm);
+
+        auto current = animator->interactionState.current; 
+        participant->send("heartrate", std::to_string(current.heartRate));
+        participant->send("breathingperiod",
+            std::to_string(current.breathingPeriod));
+        participant->send("abovethreshold",
+            current.aboveThreshold ? std::string("true") : std::string("false"));
+
+        participant->send("distancechanged", std::to_string(distanceCm));
+    };
+
+    participant->onMessage([participant, animator, updateInteractionInputs](msgflo::Message *msg) {
         std::string port = msg->port();
 
         auto payload = msg->asString();
@@ -122,17 +136,20 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
             // Calculate new parameters for animation
             const int distanceCm = stoi(payload);
             if (distanceCm > 0 && distanceCm < 1000) {
-                //auto before = animator->interaction.current;
-                animator->setDistance(distanceCm);
+                updateInteractionInputs(distanceCm);
+            } else {
+                auto error = std::string("distance outside valid range: ") + std::to_string(distanceCm);
+                participant->send("error", error);
+            }
 
-                auto current = animator->interactionState.current; 
-                participant->send("heartrate", std::to_string(current.heartRate));
-                participant->send("breathingperiod",
-                    std::to_string(current.breathingPeriod));
-                participant->send("abovethreshold",
-                    current.aboveThreshold ? std::string("true") : std::string("false"));
-
-                participant->send("distancechanged", std::to_string(distanceCm));
+        } else if (port == "threshold") {
+            const int value = stoi(payload);
+            if (value > 0 && value < 1000) {
+                animator->interact.distanceThresholdCm = value;
+                updateInteractionInputs(animator->interact.distanceCm);   
+            } else {
+                auto error = std::string("threshold outside valid range: ") + std::to_string(value);
+                participant->send("error", error);
             }
 
         // settings
@@ -140,10 +157,7 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
             const int interpolate = stoi(payload);
             animator->interact.interpolationPeriodMs = interpolate;
             participant->send("configchanged", std::string("TODO"));
-        } else if (port == "threshold") {
-            const int value = stoi(payload);
-            animator->interact.distanceThresholdCm = value;
-            participant->send("configchanged", std::string("TODO"));
+
         } else if (port == "heartbeatcolor") {
             c.heartbeatColor = RgbColor::fromHexString(payload.c_str());
             animator->setInput(c);
