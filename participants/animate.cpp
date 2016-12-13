@@ -92,6 +92,7 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
 
         // Tuning
         { "threshold", "number", "" },
+        { "idlecolor", "color", "" },
         { "breathingcolor", "color", "" },
         { "heartbeatcolor", "color", "" },
         { "heartbeatlength", "number", "" },
@@ -149,6 +150,10 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
             participant->send("configchanged", c);
         } else if (port == "breathingcolor") {
             c.breathingColor = RgbColor::fromHexString(payload.c_str());
+            animator->setInput(c);
+            participant->send("configchanged", c);
+        } else if (port == "idlecolor") {
+            c.idleColor = RgbColor::fromHexString(payload.c_str());
             animator->setInput(c);
             participant->send("configchanged", c);
         } else if (port == "heartbeatlength") {
