@@ -10,10 +10,9 @@ LDLIBS:=-lmsgflo -lmosquitto -lamqpcpp -lev -lpthread
 CXXFLAGS:=-std=c++11 -Wall -Werror -Wno-narrowing -Wno-unused-function ${DEPS_CXXFLAGS}
 CXXFLAGS+=-g
 
-build: ./test/animation ./test/averager ./participants/animate ./participants/showcolor ./participants/interact
+build: ./test/animation ./test/averager ./participants/animate ./participants/showcolor
 
 ./participants/animate: rebirth/animation.hpp
-./participants/interact: rebirth/animation.hpp
 ./test/animation: rebirth/animation.hpp rebirth/simulate.hpp
 ./test/averager: rebirth/averager.hpp
 

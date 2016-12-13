@@ -11,18 +11,35 @@ using namespace std;
 
 class Animator {
 public:
-    Animator(Input in)
+    Animator(Input in, InteractionInput iin)
       : input(in)
+      , interact(iin)
     {
-        stateChanged = [](State s) { cerr << "Animator:: No state change handler attached"; };
+        stateChanged = [](State s) {
+            cerr << "Animator:: No state change handler attached";
+        };
+
+        setDistance(interact.distanceCm);
     }
 
     void
     run(int forwardTime) {
         input.timeMs += forwardTime;
+
+        const auto s = interactionState.current;
+        input.breathingPeriodMs = s.breathingPeriod;
+        input.heartRate = s.heartRate;
+
         const State next = nextState(input, state);
         realizeState(state, config);
         state = next;
+    }
+
+    void setDistance(int distanceCm) {
+        interact.distanceCm = distanceCm;
+
+        auto n = interactionNext(interact, interactionState);
+        interactionState = n;
     }
 
     Input
@@ -45,8 +62,11 @@ public:
         stateChanged = callback;
     }
 
-private:
+public:
     Input input;
+    InteractionInput interact;
+    InteractionState interactionState;
+private:
     State state;
     Config config;
     std::function<void(State)> stateChanged;
@@ -66,17 +86,24 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
     def.inports = {
         //{ "startstop", "boolean", "" },
 
-        // Primary inputs
-        { "heartrate", "number", "" },
-        { "breathingperiod", "number", "" },
+        // Primary input
+        { "distance", "number", "" },
 
         // Tuning
+        { "threshold", "number", "" },
         { "breathingcolor", "color", "" },
         { "heartbeatcolor", "color", "" },
         { "heartbeatlength", "number", "" },
     };
     def.outports = {
+
+        // derived state
+        { "abovethreshold", "boolean", "" },
+        { "breathingperiod", "number", "" },
+        { "heartrate", "number", "" },
+
         { "error", "error", "" },
+        { "distancechanged", "number", "" },
         { "configchanged", "object", "" },
         { "ledcolor", "array", "" },
     };
@@ -88,18 +115,33 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
 
         auto payload = msg->asString();
         auto c = animator-> getInput();
-        if (port == "heartrate") {
-            c.heartRate = stoi(payload);
-            if (validInput(c.heartRate)) { 
-                animator->setInput(c);
-                participant->send("configchanged", c);
+
+        if (port == "distance") {
+            // Calculate new parameters for animation
+            const int distanceCm = stoi(payload);
+            if (distanceCm > 0 && distanceCm < 1000) {
+                //auto before = animator->interaction.current;
+                animator->setDistance(distanceCm);
+
+                auto current = animator->interactionState.current; 
+                participant->send("heartrate", std::to_string(current.heartRate));
+                participant->send("breathingperiod",
+                    std::to_string(current.breathingPeriod));
+                participant->send("abovethreshold",
+                    current.aboveThreshold ? std::string("true") : std::string("false"));
+
+                participant->send("distancechanged", std::to_string(distanceCm));
             }
-        } else if (port == "breathingperiod") {
-            c.breathingPeriodMs = stoi(payload);
-            if (validInput(c.breathingPeriodMs)) {
-                animator->setInput(c);
-                participant->send("configchanged", c);
-            }
+
+        // settings
+        } else if (port == "interpolationperiod") {
+            const int interpolate = stoi(payload);
+            animator->interact.interpolationPeriodMs = interpolate;
+            participant->send("configchanged", std::string("TODO"));
+        } else if (port == "threshold") {
+            const int value = stoi(payload);
+            animator->interact.distanceThresholdCm = value;
+            participant->send("configchanged", std::string("TODO"));
         } else if (port == "heartbeatcolor") {
             c.heartbeatColor = RgbColor::fromHexString(payload.c_str());
             animator->setInput(c);
@@ -147,7 +189,8 @@ int main(int argc, char **argv)
 
     // Setup
     Input initial = initialInputConfig();
-    Animator animator(initial);
+    auto intera = initialInteractionConfig();    
+    Animator animator(initial, intera);
     auto engine = msgflo::createEngine(config);
     setupAnimator(&animator, role, engine);
 

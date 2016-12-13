@@ -169,10 +169,12 @@ Input initialInputConfig() {
 struct InteractionOutput {
     int heartRate;
     int breathingPeriod;
+    bool aboveThreshold = false;
 };
 struct InteractionInput {
     long timeMs;
     int distanceCm;
+    int distanceThresholdCm;
     int interpolationPeriodMs;
 };
 struct InteractionState {
@@ -180,6 +182,18 @@ struct InteractionState {
     InteractionOutput target;
     InteractionOutput current;
 };
+
+InteractionInput
+initialInteractionConfig() {
+    const InteractionInput initial = {
+        timeMs: 1,
+        distanceCm: 300,
+        distanceThresholdCm: 120,
+        interpolationPeriodMs: 1000, 
+    };
+    return initial;
+}
+
 
 int
 interpolate(long distance, int from, int to, int maxDistance) {
@@ -201,9 +215,9 @@ InteractionState
 interactionNext(const InteractionInput &in, const InteractionState& prev) {
     // calculate targets from input
     // TODO: scale intensity up by inverse proportion of distance
-    const int maxDistance = 120;
     InteractionOutput desired;
-    if (in.distanceCm > maxDistance) {
+    const bool aboveThreshold = in.distanceCm > in.distanceThresholdCm; 
+    if (aboveThreshold) {
         desired.heartRate = 50;
         desired.breathingPeriod = 2100;
     } else {
@@ -230,10 +244,13 @@ interactionNext(const InteractionInput &in, const InteractionState& prev) {
         i.heartRate = interpolate(dist, from.heartRate, desired.heartRate, period);
         i.breathingPeriod = interpolate(dist, from.breathingPeriod, desired.breathingPeriod, period);
 
-        // TODO: test and actually use interpolation
+        // TODO: test and actually use the interpolation
         state.current = i;
         state.current = desired;
     }
+
+    state.target.aboveThreshold = aboveThreshold;
+    state.current.aboveThreshold = aboveThreshold;
 
     return state;
 }
