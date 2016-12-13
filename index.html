@@ -23,9 +23,31 @@
     <div id='scratch'></div>
 
     <div id='inputs'>
-      <input type='color' id='idlecolor'></input>
-      <input type='number' id='threshold'></input>
-      <input type='number' id='distance'></input>
+      <label for='idlecolor'>Idle color</label>
+      <output id='idlecolor'></output>
+      <input type='color' name='idlecolor'></input>
+
+      <label for='breathingcolor'>Breathing color</label>
+      <output id='breathingcolor'></output>
+      <input type='color' name='breathingcolor'></input>
+
+      <label for='heartbeatcolor'>Heartbeat color</label>
+      <output id='heartbeatcolor'></output>
+      <input type='color' name='heartbeatcolor'></input>
+
+      <label for='heartrate'>Heartrate</label>
+      <output id='heartrate'></output>
+      <input type='range' name='heartrate' min=10 max=300 step=2 value=133></input>
+
+      <label for='breathingperiod'>Breathing period</label>
+      <output id='breathingperiod'></output>
+      <input type='range' name='breathingperiod' min=100 max=10000 step=100 value=2100></input>
+
+      <!-- >
+      <input type='number' name='heartbeatlength'></input>
+      <input type='number' name='threshold'></input>
+      <input type='number' name='distance'></input>
+      <-- >
     </div>
 
   </body>

@@ -11,10 +11,10 @@ clearChildren = (node) ->
   return true
 
 registerChangeListeners = (inputs, client) ->
-  onChange = (event) ->
+  onInput = (event) ->
     console.log 'change', event
 
-    port = event.target.id
+    port = event.target.name
     value = event.target.value
     topic = "anim.#{port.toUpperCase()}"
 
@@ -24,9 +24,16 @@ registerChangeListeners = (inputs, client) ->
     message.destinationName = topic
     client.send message
 
+  updateOutput = (event) ->
+    input = event.target
+    output = document.getElementById input.name
+    output.value = input.value
+
   for input in inputs
     console.log input
-    input.addEventListener 'input', onChange
+    input.addEventListener 'input', onInput
+    input.addEventListener 'change', updateOutput
+    updateOutput { target: input }
 
 connectMqtt = () ->
 
