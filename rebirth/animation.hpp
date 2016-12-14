@@ -21,8 +21,7 @@ mix(int A, int B, int a, int b, int total) {
 
 //
 RgbColor
-mix(RgbColor a, RgbColor b, int balance) {
-    const int total = 1000;
+mix(RgbColor a, RgbColor b, int balance, int total) {
     const int bMix = balance;
     const int aMix = total-balance;
     RgbColor ret = {
@@ -153,7 +152,7 @@ nextState(const Input &input, const State& previous) {
     RgbColor heartbeat = input.heartbeatColor;
     const long heartbeatPeriod = ((long)1000*(long)60)/input.heartRate;
     const long heartbeatPos = input.timeMs % heartbeatPeriod;
-    const int heartbeatMix = ( between(heartbeatPos, 1, input.heartbeatLengthMs) ) ?  1000 : 0;
+    const int heartbeatMix = ( between(heartbeatPos, 1, input.heartbeatLengthMs) ) ?  max : 0;
 
     // Combine
     s.ledColor = mix(breathing, heartbeat, heartbeatMix);
