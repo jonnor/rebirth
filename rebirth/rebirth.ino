@@ -14,7 +14,24 @@ struct Pins {
 static const int reportIntervalMs = 300;
 static const int animationIntervalMs = 33;
 static const int averagingSamples = 20;
+// At what distance the sensor will trigger
 static const int idleDistanceCm = 120;
+Input input = {
+    timeMs: 1,
+    idle: true,
+    // Color when idle, no-one close to sensor
+    idleColor: { 0, 255, 0 },
+    // Time to complete one breathing cycle (milliseconds)
+    breathingPeriodMs: 2500,
+    // Color of the breathing at max
+    breathingColor: { 200, 200, 255 },
+    // How fast the heartbeat is beating (beats per minute)
+    heartRate: 133,
+    // Color of the heartbeat
+    heartbeatColor: { 200, 30, 30 },
+    // Duration of one heartbeat
+    heartbeatLengthMs: 80,
+};
 
 // From https://github.com/guillaume-rico/SharpIR/blob/master/SharpIR.cpp#L97
 int calculateDistanceCm(int value) {
@@ -29,7 +46,6 @@ Averager<averagingSamples> averager;
 long nextAnimationTime = 0;
 int latestDistance = 666;
 State state;
-Input input;
 
 void setup() {
   pinMode(Pins::LedR, OUTPUT);
@@ -42,8 +58,6 @@ void setup() {
   analogWrite(Pins::LedR, c.r);
   analogWrite(Pins::LedG, c.g);
   analogWrite(Pins::LedB, c.b);
-
-  input = initialInputConfig();
 }
 
 void loop() {
