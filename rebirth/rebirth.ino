@@ -11,9 +11,10 @@ struct Pins {
   const static int LedB = 11;
   const static int DistanceSensor = 0; // analog in
 };
-static const int reportIntervalMs = 500;
+static const int reportIntervalMs = 300;
 static const int animationIntervalMs = 33;
 static const int averagingSamples = 20;
+static const int idleDistanceCm = 120;
 
 // From https://github.com/guillaume-rico/SharpIR/blob/master/SharpIR.cpp#L97
 int calculateDistanceCm(int value) {
@@ -26,6 +27,7 @@ Parser parser;
 long nextReportTime = 0;
 Averager<averagingSamples> averager;
 long nextAnimationTime = 0;
+int latestDistance = 666;
 State state;
 Input input;
 
@@ -70,19 +72,21 @@ void loop() {
   const int val = analogRead(Pins::DistanceSensor);
   averager.push(val);
 
-  // Report sensor value
+  // Report sensor value, and update latestDistance
   const long currentTime = millis();
   if (currentTime >= nextReportTime) {
     static const int BUF_MAX = 50;
     char buf[BUF_MAX] = {0};
-    const int distance = calculateDistanceCm(averager.getMedian());
-    snprintf(buf, BUF_MAX, "updated distance=%d\n", distance);
+    latestDistance = calculateDistanceCm(averager.getMedian());
+    snprintf(buf, BUF_MAX, "updated distance=%d\n", latestDistance);
     Serial.write(buf);
     nextReportTime = currentTime+reportIntervalMs;
   }
 
   const long timePreAnimation = millis();
   if (timePreAnimation > nextAnimationTime) {
+    // Update state
+    input.idle = latestDistance > idleDistanceCm;
 
     // Forward time
     input.timeMs += animationIntervalMs;

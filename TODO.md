@@ -112,6 +112,7 @@ TODO
 ```
 - Changes the system from what is known, potentially introducing new problems.
 - May take a long time to do.
++ Amir can flash update the device with new updates
 ! Without access to a Arduino, unlikely the Arduino code will work on first try.
   With access, can verify 99% by having a potmeter and three LEDs connected.
 + Reduces number of components in the system substantially, lowering complexity.
