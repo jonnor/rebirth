@@ -2,7 +2,6 @@
 #include "color.hpp"
 #include "animation.hpp"
 #include "averager.hpp"
-#include "parser.hpp"
 
 // Configuration
 struct Pins {
@@ -11,9 +10,11 @@ struct Pins {
   const static int LedB = 11;
   const static int DistanceSensor = 0; // analog in
 };
+// Advanced config, be careful
 static const int reportIntervalMs = 300;
 static const int animationIntervalMs = 33;
 static const int averagingSamples = 20;
+
 // At what distance the sensor will trigger
 static const int idleDistanceCm = 120;
 Input input = {
@@ -40,7 +41,6 @@ int calculateDistanceCm(int value) {
 }
 
 // Variables
-Parser parser;
 long nextReportTime = 0;
 Averager<averagingSamples> averager;
 long nextAnimationTime = 0;
@@ -53,31 +53,13 @@ void setup() {
   pinMode(Pins::LedB, OUTPUT);
   pinMode(Pins::DistanceSensor, INPUT);
   Serial.begin(9600);
-  parser.color = { 33, 0, 0 };
-  const auto &c = parser.color;
+  const auto &c = input.idleColor;
   analogWrite(Pins::LedR, c.r);
   analogWrite(Pins::LedG, c.g);
   analogWrite(Pins::LedB, c.b);
 }
 
 void loop() {
-  
-  // Check for serial input to change LEDs
-  if (Serial.available() > 0) {
-    const uint8_t in = Serial.read();
-    const bool changed = parser.push(in);
-    if (changed) {
-      auto &c = parser.color;
-      analogWrite(Pins::LedR, c.r);
-      analogWrite(Pins::LedG, c.g);
-      analogWrite(Pins::LedB, c.b);
-      static const int BUF_MAX = 50;
-      char buf[BUF_MAX] = {0};
-      snprintf(buf, BUF_MAX, "updated r=%d g=%d b=%d\n", c.r, c.g, c.b);
-      Serial.write(buf);
-    }
-  }
-  
   // Read the sensor values
   const int val = analogRead(Pins::DistanceSensor);
   averager.push(val);
@@ -93,6 +75,7 @@ void loop() {
     nextReportTime = currentTime+reportIntervalMs;
   }
 
+  // Update animation
   const long timePreAnimation = millis();
   if (timePreAnimation > nextAnimationTime) {
     // Update state
