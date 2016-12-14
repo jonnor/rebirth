@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "make check",
-    "start": "./node_modules/.bin/msgflo-setup --participants=true --forever true graphs/TestAnimation.fbp"
+    "start": "./node_modules/.bin/msgflo-setup --participants=true --forever true graphs/Main.fbp"
   },
   "author": "",
   "license": "ISC",

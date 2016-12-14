@@ -1,27 +1,3 @@
 
-# Open connection to Arduino
-# Color wont actually be seen, because it restarts upon serial connect
-"/dev/ttyACM0" -> PORT send(SendToArduino)
-"[ 0, 0, 222 ]" -> (strings/ParseJson) -> COLOR send
-
-# Read camera data
-camera(StreamWebcam) IMAGE -> removeBackground(RemoveBackground) -> convert(MatrixToCanvas)
-'0.3' -> (strings/ParseFloat) -> FRAMERATE camera
-'320' -> (strings/ParseInt) -> WIDTH camera
-'240' -> (strings/ParseInt) -> HEIGHT camera
-'0' -> (strings/ParseInt) -> DEVICE camera
-
-# Extract the colors
-convert CANVAS -> CANVAS colors(image/GetColors) COLORS -> COLORS pick(PickColor)
-
-# Send colors to Ardunino
-pick COLOR -> COLOR send
-colors COLORS -> IN out(core/Output)
-pick COLOR -> out
-
-# Error handling
-errors(core/Repeat) -> IN out
-load ERROR -> errors
-colors ERROR -> errors
-pick ERROR -> errors
-
+anim(animate) LEDCOLOR -> IN send(Send)
+send DISTANCE -> DISTANCE anim

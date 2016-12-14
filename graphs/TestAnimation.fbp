@@ -1,3 +1,0 @@
-
-anim(animate) LEDCOLOR -> IN send(Send)
-send DISTANCE -> DISTANCE anim
