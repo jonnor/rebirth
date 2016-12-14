@@ -1,0 +1,7 @@
+[Unit]
+Description=Workaround unreliability yay
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/sh -c "systemctl stop rebirth.target && systemctl start rebirth.target" 
+User=pi

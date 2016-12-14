@@ -1,0 +1,10 @@
+[Unit]
+Description=Workaround unreliability yay
+
+[Timer]
+OnBootSec=5min
+OnCalendar=*:0/10
+Unit=rebirth-restart.service
+
+[Install]
+WantedBy=multi-user.target

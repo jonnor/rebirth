@@ -1,15 +1,13 @@
 [Unit]
-Description=The Rebirth installation
+Description=Rebirth installation animate participant
 ConditionPathExists=|/usr/bin
 After=network.target
+StopWhenUnneeded=true
 
 [Service]
 Environment=MSGFLO_BROKER=mqtt://localhost REBIRTH_TICKMS=33
 User=pi
 WorkingDirectory=/home/pi/rebirth
-ExecStart=/usr/bin/npm start
-RestartSec=5
+ExecStart=/usr/bin/sh ./participants/run animate anim
+RestartSec=3
 Restart=always
-
-[Install]
-WantedBy=multi-user.target

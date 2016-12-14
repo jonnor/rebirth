@@ -3,9 +3,6 @@
 
 Make it work
 
-* Run each of the processes as separate systemd service, to handle crashes.
-* Can we put all these into a service group somehow?
-* Hack, have a timer which restarts the entire group regularly
 * Proper, have a watchdog monitoring the MQTT traffic, restart if not passing
 
 Make it nice

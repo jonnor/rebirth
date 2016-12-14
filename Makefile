@@ -34,4 +34,8 @@ check: build
 dev:
 	PATH=${PATH}:/home/${USER}/.local/bin/ when-changed arduino/animation.hpp make run
 
+install:
+	cp systemd/* /etc/systemd/system/
+	systemctl daemon-reload
+
 .PHONY: msgflo-cpp check

@@ -1,0 +1,13 @@
+[Unit]
+Description=Rebirth installation send participant
+ConditionPathExists=|/usr/bin
+After=network.target
+StopWhenUnneeded=true
+
+[Service]
+Environment=MSGFLO_BROKER=mqtt://localhost REBIRTH_TICKMS=33
+User=pi
+WorkingDirectory=/home/pi/rebirth
+ExecStart=/usr/bin/node ./node_modules/.bin/noflo-runtime-msgflo --name send --graph SendArduino
+RestartSec=5
+Restart=always
