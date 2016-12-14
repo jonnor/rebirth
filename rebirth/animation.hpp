@@ -102,8 +102,8 @@ RgbColor
 scaleBrightness(RgbColor c, int factor, int max) {
     return {
         (uint8_t)scale(c.r, factor, max),
-        (uint8_t)scale(c.r, factor, max),
-        (uint8_t)scale(c.r, factor, max),
+        (uint8_t)scale(c.g, factor, max),
+        (uint8_t)scale(c.b, factor, max),
     };
 }
 
