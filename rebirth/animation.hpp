@@ -165,11 +165,11 @@ Input initialInputConfig() {
         timeMs: 1,
         idle: true,
         idleColor: { 0, 255, 0 },
-        breathingPeriodMs: 2100,
+        breathingPeriodMs: 2500,
         breathingColor: { 200, 200, 255 },
-        heartRate: 80,
-        heartbeatColor: { 255, 10, 10 },
-        heartbeatLengthMs: 100,
+        heartRate: 133,
+        heartbeatColor: { 200, 30, 30 },
+        heartbeatLengthMs: 80,
     };
     return initial;
 }
