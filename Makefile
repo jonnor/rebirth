@@ -32,7 +32,7 @@ check: build
 	LD_LIBRARY_PATH=./build/install/lib ./test/animation
 
 dev:
-	PATH=${PATH}:/home/${USER}/.local/bin/ when-changed arduino/animation.hpp make run
+	PATH=${PATH}:/home/${USER}/.local/bin/ when-changed rebirth/animation.hpp make run
 
 install:
 	cp systemd/* /etc/systemd/system/
