@@ -155,7 +155,7 @@ nextState(const Input &input, const State& previous) {
     const int heartbeatMix = ( between(heartbeatPos, 1, input.heartbeatLengthMs) ) ?  max : 0;
 
     // Combine
-    s.ledColor = mix(breathing, heartbeat, heartbeatMix);
+    s.ledColor = mix(breathing, heartbeat, heartbeatMix, max);
 
     return s;
 }
