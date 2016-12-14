@@ -138,7 +138,7 @@ setupAnimator(Animator *animator, const std::string &role, std::shared_ptr<msgfl
         if (port == "distance") {
             // Calculate new parameters for animation
             const int distanceCm = stoi(payload);
-            if (distanceCm > 0 && distanceCm < 8000) {
+            if (distanceCm >= 0 && distanceCm < 8000) {
                 updateInteractionInputs(distanceCm);
             } else {
                 auto error = std::string("distance outside valid range: ") + std::to_string(distanceCm);
