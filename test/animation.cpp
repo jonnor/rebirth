@@ -10,18 +10,18 @@ tests(void) {
     RgbColor pureRed = { 255, 0, 0 }; 
     
     // mix()
-    RgbColor fullA = mix(midGray, pureRed, 0);
+    RgbColor fullA = mix(midGray, pureRed, 0, 1000);
     assert(fullA == midGray);
 
-    RgbColor fullB = mix(midGray, pureRed, 1000);
+    RgbColor fullB = mix(midGray, pureRed, 1000, 1000);
     assert(fullB == pureRed);
 
-    RgbColor mid = mix(midGray, pureRed, 500);
+    RgbColor mid = mix(midGray, pureRed, 500, 1000);
     RgbColor midExpected{ 177, 50, 50 };
     //fprintf(stderr, "%s\n", mid.to_string().c_str());
     assert(mid == midExpected);
 
-    RgbColor quarterA = mix(midGray, pureRed, 250);
+    RgbColor quarterA = mix(midGray, pureRed, 250, 1000);
     //fprintf(stderr, "%s\n", quarterA.to_string().c_str());
     assert(quarterA == (RgbColor{ 138, 75, 75 }));
 
