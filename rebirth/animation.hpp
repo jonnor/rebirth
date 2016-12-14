@@ -165,7 +165,7 @@ Input initialInputConfig() {
     static const Input initial = {
         timeMs: 1,
         idle: true,
-        idleColor: { 255, 0, 0 },
+        idleColor: { 0, 255, 0 },
         breathingPeriodMs: 2100,
         breathingColor: { 200, 200, 255 },
         heartRate: 80,
