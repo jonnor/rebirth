@@ -37,7 +37,7 @@ RgbColor
 RgbColor::fromHexString(const char *str) {
     int r, g, b;
     sscanf(str, "#%02x%02x%02x", &r, &g, &b);
-    const RgbColor c = { r, g, b };
+    const RgbColor c = { (uint8_t)r, (uint8_t)g, (uint8_t)b };
     return c;
 }
 
