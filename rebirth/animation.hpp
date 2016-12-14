@@ -151,7 +151,7 @@ nextState(const Input &input, const State& previous) {
 
     // Heartbeat
     RgbColor heartbeat = input.heartbeatColor;
-    const long heartbeatPeriod = (1000*60)/input.heartRate;
+    const long heartbeatPeriod = ((long)1000*(long)60)/input.heartRate;
     const long heartbeatPos = input.timeMs % heartbeatPeriod;
     const int heartbeatMix = ( between(heartbeatPos, 1, input.heartbeatLengthMs) ) ?  1000 : 0;
 
