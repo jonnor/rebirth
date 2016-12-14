@@ -37,10 +37,6 @@ void setup() {
   pinMode(Pins::LedB, OUTPUT);
   pinMode(Pins::DistanceSensor, INPUT);
   Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB
-  }
-  Serial.write("ready\n");
   parser.color = { 33, 0, 0 };
   const auto &c = parser.color;
   analogWrite(Pins::LedR, c.r);
