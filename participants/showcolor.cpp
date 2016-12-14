@@ -46,9 +46,9 @@ int main(int argc, char **argv)
         
         if (payload["r"].is_number() && payload["g"].is_number() && payload["b"].is_number()) {
             RgbColor color = {
-                payload["r"].number_value(),
-                payload["g"].number_value(),
-                payload["b"].number_value(),
+                (uint8_t)payload["r"].number_value(),
+                (uint8_t)payload["g"].number_value(),
+                (uint8_t)payload["b"].number_value(),
             };
             colorRenderTerminal(color, "XXXXXXXXXX\n");
             fflush(stdout);
