@@ -4,6 +4,7 @@ ConditionPathExists=|/usr/bin
 After=network.target
 Requires=rebirth-send.service
 Requires=rebirth-animate.service
+Requires=rebirth-runtime.service
 
 [Install]
 WantedBy=multi-user.target

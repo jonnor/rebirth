@@ -1,0 +1,13 @@
+[Unit]
+Description=Rebirth installation MsgFlo runtime
+ConditionPathExists=|/usr/bin
+After=network.target
+StopWhenUnneeded=true
+
+[Service]
+Environment=MSGFLO_BROKER=mqtt://localhost REBIRTH_TICKMS=33
+User=pi
+WorkingDirectory=/home/pi/rebirth
+ExecStart=/usr/bin/node ./node_modules/.bin/msgflo-setup --forever true graphs/Main.fbp
+RestartSec=3
+Restart=always
