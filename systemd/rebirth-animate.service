@@ -8,6 +8,6 @@ StopWhenUnneeded=true
 Environment=MSGFLO_BROKER=mqtt://localhost REBIRTH_TICKMS=33
 User=pi
 WorkingDirectory=/home/pi/rebirth
-ExecStart=/usr/bin/sh ./participants/run animate anim
+ExecStart=/bin/sh ./participants/run animate anim
 RestartSec=3
 Restart=always
