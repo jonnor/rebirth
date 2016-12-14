@@ -1,14 +1,19 @@
 
 #include "color.hpp"
+#include "animation.hpp"
 #include "averager.hpp"
 #include "parser.hpp"
 
+// Configuration
 struct Pins {
   const static int LedR = 9;
   const static int LedG = 10;
   const static int LedB = 11;
   const static int DistanceSensor = 0; // analog in
 };
+static const int reportIntervalMs = 500;
+static const int animationIntervalMs = 33;
+static const int averagingSamples = 20;
 
 // From https://github.com/guillaume-rico/SharpIR/blob/master/SharpIR.cpp#L97
 int calculateDistanceCm(int value) {
@@ -16,12 +21,13 @@ int calculateDistanceCm(int value) {
   return 60.374 * pow(map(value, 0, 1023, 0, 5000)/1000.0, -1.16);
 }
 
-// Arduino code
+// Variables
 Parser parser;
 long nextReportTime = 0;
-static const int reportIntervalMs = 100;
-static const int averagingSamples = 20;
 Averager<averagingSamples> averager;
+long nextAnimationTime = 0;
+State state;
+Input input;
 
 void setup() {
   pinMode(Pins::LedR, OUTPUT);
@@ -38,6 +44,8 @@ void setup() {
   analogWrite(Pins::LedR, c.r);
   analogWrite(Pins::LedG, c.g);
   analogWrite(Pins::LedB, c.b);
+
+  input = initialInputConfig();
 }
 
 void loop() {
@@ -71,5 +79,22 @@ void loop() {
     snprintf(buf, BUF_MAX, "updated distance=%d\n", distance);
     Serial.write(buf);
     nextReportTime = currentTime+reportIntervalMs;
+  }
+
+  const long timePreAnimation = millis();
+  if (timePreAnimation > nextAnimationTime) {
+
+    // Forward time
+    input.timeMs += animationIntervalMs;
+
+    // WARN: does not respect parser.color (or visa verca)
+    const State next = nextState(input, state);
+    const RgbColor c = next.ledColor;
+    analogWrite(Pins::LedR, c.r);
+    analogWrite(Pins::LedG, c.g);
+    analogWrite(Pins::LedB, c.b);
+
+    nextAnimationTime = timePreAnimation+animationIntervalMs;
+    state = next;
   }
 }
