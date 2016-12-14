@@ -71,6 +71,7 @@ simulateAnimation() {
     Config config;
     while (currentTime < simulationTime) {
         in.timeMs = currentTime;
+        in.idle = false;
         const State state = nextState(in, previousState);
         realizeState(state, config);
         history.push_back({ in, state });
