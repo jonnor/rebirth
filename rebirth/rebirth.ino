@@ -57,10 +57,7 @@ void loop() {
     const uint8_t in = Serial.read();
     const bool changed = parser.push(in);
     if (changed) {
-      auto &c = parser.color;
-      analogWrite(Pins::LedR, c.r);
-      analogWrite(Pins::LedG, c.g);
-      analogWrite(Pins::LedB, c.b);
+      input.idleColor = parser.color;
       static const int BUF_MAX = 50;
       char buf[BUF_MAX] = {0};
       snprintf(buf, BUF_MAX, "updated r=%d g=%d b=%d\n", c.r, c.g, c.b);
@@ -91,7 +88,6 @@ void loop() {
     // Forward time
     input.timeMs += animationIntervalMs;
 
-    // WARN: does not respect parser.color (or visa verca)
     const State next = nextState(input, state);
     const RgbColor c = next.ledColor;
     analogWrite(Pins::LedR, c.r);
