@@ -182,6 +182,8 @@ No need to tween etc at runtime.
 Runtime code should be able to do interpolation, at minimum linear.
 Initially draw in Inkscape. Over time move to have dedicated webUI inputs.
 Data formation should be (de)serializable, so it can be sent over protocol, and persisted.
+Related, details on how Beziers work: http://h14s.p5r.org/2013/01/bezier.html
+Unrelated, fun hacking of fast inverse/squareroot computation, http://h14s.p5r.org/2012/09/0x5f3759df.html 
 * Have an emulated Arduino. Should echo back. For testing `SendToArduino` component.
 `socat PTY,link=/dev/ttyS10 PTY,link=/dev/ttyS11`
 Alternative would be to use MicroFlo on the Arduino, and running emulator locally.
