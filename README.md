@@ -3,10 +3,11 @@
 
 A sculptural interactive installation.
 
-!["Sculpture complete and LED colors on"](./doc/rebirth-1.jpg)
+[![Video about Rebirth project on Vimeo](./doc/rebirth-video.png)](https://vimeo.com/232317449)
 
+![Sculpture complete and LED colors on](./doc/rebirth-1.jpg)
 
 # By
 
-    Amir Gazit
-    Jon Nordby
+[Amir Gazit](https://www.amirgazit.net/)</br>
+[Jon Nordby](http://jonnor.com)
